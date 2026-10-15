@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校園空氣品質與空汙旗幟</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+TC:wght@400;600;700;900&display=swap');
+
+    :root {
+      --font-cute: 'Zen Maru Gothic', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      
+      /* Level Colors - Vivid & Playful Palette */
+      --flag-green: #05c46b;
+      --flag-green-bg: #eafff3;
+      --flag-green-border: #99f6c4;
+      --flag-green-badge: linear-gradient(135deg, #05c46b 0%, #00a352 100%);
+      --flag-green-shadow: rgba(5, 196, 107, 0.35);
+
+      --flag-yellow: #ffb100;
+      --flag-yellow-bg: #fffbeb;
+      --flag-yellow-border: #fed780;
+      --flag-yellow-badge: linear-gradient(135deg, #ffb800 0%, #f39c12 100%);
+      --flag-yellow-shadow: rgba(255, 177, 0, 0.35);
+
+      --flag-orange: #ff793f;
+      --flag-orange-bg: #fff4ed;
+      --flag-orange-border: #ffc4a8;
+      --flag-orange-badge: linear-gradient(135deg, #ff793f 0%, #e55039 100%);
+      --flag-orange-shadow: rgba(255, 121, 63, 0.35);
+
+      --flag-red: #ff3838;
+      --flag-red-bg: #fff0f0;
+      --flag-red-border: #ffb8b8;
+      --flag-red-badge: linear-gradient(135deg, #ff4d4d 0%, #c41818 100%);
+      --flag-red-shadow: rgba(255, 56, 56, 0.35);
+
+      --flag-purple: #be2edd;
+      --flag-purple-bg: #fcf0ff;
+      --flag-purple-border: #eab4ff;
+      --flag-purple-badge: linear-gradient(135deg, #be2edd 0%, #881b9a 100%);
+      --flag-purple-shadow: rgba(190, 46, 221, 0.35);
+
+      --flag-maroon: #7e0023;
+      --flag-maroon-bg: #fff0f3;
+      --flag-maroon-border: #f8a5b8;
+      --flag-maroon-badge: linear-gradient(135deg, #8c0c32 0%, #59041b 100%);
+      --flag-maroon-shadow: rgba(126, 0, 35, 0.35);
+
+      --flag-gray: #8395a7;
+      --flag-gray-bg: #f1f2f6;
+      --flag-gray-border: #c8d6e5;
+      --flag-gray-badge: linear-gradient(135deg, #8395a7 0%, #576574 100%);
+      --flag-gray-shadow: rgba(131, 149, 167, 0.35);
+
+      /* Dynamic Theme Variables (Default Yellow) */
+      --current-flag: var(--flag-yellow);
+      --current-bg: var(--flag-yellow-bg);
+      --current-border: var(--flag-yellow-border);
+      --current-badge: var(--flag-yellow-badge);
+      --current-shadow: var(--flag-yellow-shadow);
+      --current-text: #8d4f00;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-cute);
+      background-color: transparent;
+      color: var(--text-main);
+      line-height: 1.5;
+      font-size: 14px;
+      overflow-x: hidden;
+      padding: 8px;
+    }
+
+    /* Cute Card Container */
+    .cute-widget {
+      background: #ffffff;
+      border-radius: 24px;
+      border: 2.5px solid var(--current-border);
+      box-shadow: 0 10px 25px -4px var(--current-shadow), 0 4px 10px -2px rgba(0,0,0,0.04);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Playful Decorative Top Bar with Cloud Waves */
+    .top-cute-banner {
+      background: var(--current-bg);
+      padding: 10px 16px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 2px dashed var(--current-border);
+      position: relative;
+    }
+
+    .school-location {
+      display: flex;
+      align-items: center;
+    }
+
+    .location-dropdown-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      background: #ffffff;
+      border: 2px solid var(--current-border);
+      border-radius: 999px;
+      padding: 3px 22px 3px 9px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+    }
+
+    .location-dropdown-wrapper:hover {
+      border-color: var(--current-flag);
+      box-shadow: 0 4px 10px var(--current-shadow);
+      transform: translateY(-1px);
+    }
+
+    .dropdown-pin {
+      font-size: 14px;
+      margin-right: 4px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .station-dropdown {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-main);
+      cursor: pointer;
+      padding: 0;
+      max-width: 220px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .station-dropdown optgroup {
+      font-weight: 900;
+      color: #2563eb;
+      background: #f1f5f9;
+      font-size: 12px;
+    }
+
+    .station-dropdown option {
+      font-weight: 700;
+      color: #0f172a;
+      background: #ffffff;
+      font-size: 13px;
+      padding: 6px 10px;
+    }
+
+    .dropdown-arrow {
+      position: absolute;
+      right: 9px;
+      font-size: 8.5px;
+      color: #64748b;
+      pointer-events: none;
+      transition: transform 0.2s;
+    }
+
+    .location-dropdown-wrapper:hover .dropdown-arrow {
+      color: var(--current-flag);
+      transform: translateY(1px);
+    }
+
+    /* Hero Section: Flag & Decision */
+    .hero-cute-stage {
+      padding: 16px 18px 12px;
+      background: linear-gradient(180deg, var(--current-bg) 0%, #ffffff 100%);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .flag-hero-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 12px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.75);
+      border: 2px solid var(--current-border);
+      border-radius: 18px;
+      box-shadow: 0 4px 12px var(--current-shadow);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .flag-box {
+      width: 88px;
+      height: 72px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
+      position: relative;
+    }
+
+    /* Floating Weather Icon & Temp beside Flag (Frameless & Prominent) */
+    .flag-weather-badge {
+      position: absolute;
+      top: -8px;
+      right: -4px;
+      background: none;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      box-shadow: none;
+      backdrop-filter: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      z-index: 2;
+      animation: weatherFloat 3s ease-in-out infinite;
+      cursor: default;
+      transition: transform 0.25s;
+    }
+
+    .flag-weather-badge:hover {
+      transform: scale(1.1) translateY(-2px);
+    }
+
+    @keyframes weatherFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    .weather-icon-anim {
+      font-size: 26px;
+      line-height: 1;
+      display: inline-block;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+    }
+
+    .weather-temp-badge {
+      font-size: 15px;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: -0.3px;
+      text-shadow: 0 1px 2px rgba(255,255,255,0.9);
+    }
+
+    .flag-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .flag-title-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    .flag-name-badge {
+      font-size: 19px;
+      font-weight: 900;
+      color: var(--current-flag);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.2px;
+      transition: color 0.3s ease;
+    }
+
+    .flag-icon-dot {
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .flag-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .aqi-badge-pill {
+      font-size: 13px;
+      font-weight: 800;
+      padding: 3px 12px;
+      border-radius: 999px;
+      background: var(--current-bg);
+      border: 1.5px solid var(--current-border);
+      color: var(--current-text);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+    }
+
+    .weather-pill {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #0369a1;
+      background: #f0f9ff;
+      padding: 2.5px 9px;
+      border-radius: 999px;
+      border: 1.5px solid #bae6fd;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+      white-space: nowrap;
+    }
+
+    .time-pill {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: #ffffff;
+      padding: 2.5px 9px;
+      border-radius: 999px;
+      border: 1.5px solid var(--current-border);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+      white-space: nowrap;
+    }
+
+    /* Outdoor Decision Super Badge */
+    .outdoor-hero-badge {
+      background: var(--current-badge);
+      border-radius: 16px;
+      padding: 10px 16px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 6px 16px var(--current-shadow);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .outdoor-hero-badge::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      animation: badgeShine 4s infinite;
+    }
+
+    @keyframes badgeShine {
+      0% { left: -100%; }
+      30% { left: 150%; }
+      100% { left: 150%; }
+    }
+
+    .decision-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .decision-emoji {
+      font-size: 26px;
+      line-height: 1;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+    }
+
+    .decision-text-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .decision-sub {
+      font-size: 11px;
+      font-weight: 700;
+      opacity: 0.9;
+      letter-spacing: 0.5px;
+    }
+
+    .decision-main {
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    }
+
+    .decision-sparkle {
+      font-size: 20px;
+      opacity: 0.9;
+    }
+
+    /* Advice Cards Section (Vibrant & Friendly) */
+    .cute-advice-section {
+      padding: 12px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .cute-card {
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1.5px solid #e2e8f0;
+      padding: 10px 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      transition: transform 0.2s;
+    }
+
+    .cute-card:hover {
+      transform: translateY(-1px);
+    }
+
+    .cute-card.pe-card {
+      border-left: 4.5px solid var(--current-flag);
+      background: #fafcff;
+    }
+
+    .cute-card.sensitive-card {
+      border-left: 4.5px solid #ff793f;
+      background: #fffdfb;
+      border-color: #ffe3d4;
+    }
+
+    .cute-icon-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .pe-card .cute-icon-badge {
+      background: var(--current-bg);
+    }
+
+    .sensitive-card .cute-icon-badge {
+      background: #ffece2;
+    }
+
+    .cute-card-content {
+      flex: 1;
+    }
+
+    .cute-card-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 2px;
+    }
+
+    .cute-card-body {
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+      line-height: 1.45;
+    }
+
+    /* Metric Grid (Candy Pills) */
+    .cute-metrics {
+      padding: 10px 18px 14px;
+      background: #ffffff;
+    }
+
+    .metrics-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .metrics-header-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .pollutant-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      background: #f1f5f9;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .candy-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .candy-box {
+      background: #f8fafc;
+      border: 1.5px solid #edf2f7;
+      border-radius: 12px;
+      padding: 8px 4px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .candy-box:hover {
+      background: #ffffff;
+      border-color: var(--current-border);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    .candy-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #64748b;
+      margin-bottom: 2px;
+    }
+
+    .candy-val {
+      font-size: 16px;
+      font-weight: 900;
+      color: #0f172a;
+    }
+
+    .candy-unit {
+      font-size: 9.5px;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    /* Cheerful Footer */
+    .cute-footer {
+      padding: 10px 18px;
+      background: #f8fafc;
+      border-top: 1.5px dashed var(--current-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .btn-cute-info {
+      background: none;
+      border: none;
+      color: #3b82f6;
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 6px;
+      border-radius: 6px;
+      transition: background 0.15s;
+    }
+
+    .btn-cute-info:hover {
+      background: #eff6ff;
+    }
+
+    .btn-cute-refresh {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #334155;
+      padding: 3px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+      transition: all 0.2s;
+    }
+
+    .btn-cute-refresh:hover {
+      border-color: var(--current-flag);
+      color: var(--current-flag);
+      transform: scale(1.03);
+    }
+
+    .refresh-rotator {
+      display: inline-block;
+      transition: transform 0.5s ease;
+    }
+
+    .btn-cute-refresh.spinning .refresh-rotator {
+      transform: rotate(360deg);
+    }
+
+    /* THEME: Compact Sidebar (theme=compact) */
+    body.theme-compact .cute-widget {
+      border-radius: 18px;
+    }
+    body.theme-compact .cute-metrics {
+      display: none;
+    }
+    body.theme-compact .hero-cute-stage {
+      padding: 12px 14px 10px;
+    }
+    body.theme-compact .cute-advice-section {
+      padding: 8px 14px 10px;
+      gap: 6px;
+    }
+
+    /* THEME: Horizontal Banner (theme=banner) */
+    body.theme-banner {
+      padding: 0;
+    }
+    body.theme-banner .cute-widget {
+      border-radius: 0;
+      border: none;
+      border-bottom: 3px solid var(--current-border);
+      box-shadow: none;
+    }
+    body.theme-banner .banner-view {
+      display: flex;
+      align-items: center;
+      padding: 8px 18px;
+      gap: 16px;
+      background: linear-gradient(90deg, var(--current-bg) 0%, #ffffff 100%);
+    }
+    body.theme-banner .banner-mascot {
+      width: 52px;
+      height: 52px;
+      flex-shrink: 0;
+    }
+    body.theme-banner .banner-center {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    body.theme-banner .banner-decision {
+      flex-shrink: 0;
+    }
+    body.theme-banner .banner-advice {
+      flex: 1;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #334155;
+      background: #ffffff;
+      border: 1.5px solid var(--current-border);
+      border-radius: 10px;
+      padding: 6px 12px;
+      line-height: 1.4;
+    }
+    body.theme-banner .top-cute-banner,
+    body.theme-banner .hero-cute-stage,
+    body.theme-banner .cute-advice-section,
+    body.theme-banner .cute-metrics,
+    body.theme-banner .cute-footer {
+      display: none;
+    }
+
+    /* THEME: Mini Badge (theme=badge) */
+    body.theme-badge {
+      padding: 0;
+    }
+    body.theme-badge .cute-widget {
+      border-radius: 14px;
+      padding: 6px 12px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      background: var(--current-bg);
+      border: 2px solid var(--current-border);
+      box-shadow: 0 4px 10px var(--current-shadow);
+    }
+    body.theme-badge .top-cute-banner,
+    body.theme-badge .hero-cute-stage,
+    body.theme-badge .cute-advice-section,
+    body.theme-badge .cute-metrics,
+    body.theme-badge .cute-footer {
+      display: none;
+    }
+
+    /* Modal for Ministry of Education Guidelines */
+    .cute-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
+
+    .cute-modal-overlay.active {
+      display: flex;
+    }
+
+    .cute-modal {
+      background: #ffffff;
+      border-radius: 24px;
+      border: 3px solid var(--current-border);
+      max-width: 520px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes modalPop {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .cute-modal-header {
+      padding: 16px 20px;
+      background: var(--current-bg);
+      border-bottom: 2px dashed var(--current-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cute-modal-title {
+      font-size: 16px;
+      font-weight: 900;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cute-modal-close {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-size: 18px;
+      font-weight: 800;
+      color: #64748b;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .cute-modal-body {
+      padding: 18px 20px;
+      font-size: 13px;
+    }
+
+    .cute-flag-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      border: 1.5px solid #edf2f7;
+    }
+
+    .cute-flag-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    .loading-shimmer {
+      opacity: 0.7;
+      filter: grayscale(0.3);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Main Cute Widget App -->
+  <div class="cute-widget" id="cuteApp">
+    
+    <!-- Top Cute Banner -->
+    <div class="top-cute-banner" id="topCuteBanner">
+      <div class="school-location">
+        <div class="location-dropdown-wrapper" title="點擊下拉選單，可快速選擇其他測站與縣市">
+          <span class="dropdown-pin">📍</span>
+          <select id="stationSelect" class="station-dropdown" aria-label="選擇空氣品質監測站">
+            <option value="26">沙鹿測站 (臺中市)</option>
+          </select>
+          <span class="dropdown-arrow">▼</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Cute Stage: Mascot + Flag Speech Bubble + Decision Badge -->
+    <div class="hero-cute-stage" id="heroCuteStage">
+      <div class="flag-hero-row" id="flagHeroRow">
+        <!-- Prominent Animated School Air Quality Flag -->
+        <div class="flag-box" title="校園空氣品質旗幟與當地氣候">
+          <svg class="flag-svg" viewBox="0 0 100 80">
+            <!-- Flagpole with base and gold finial -->
+            <line x1="22" y1="8" x2="22" y2="76" stroke="#475569" stroke-width="4.5" stroke-linecap="round"/>
+            <circle cx="22" cy="8" r="5" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/>
+            <line x1="14" y1="76" x2="30" y2="76" stroke="#475569" stroke-width="4.5" stroke-linecap="round"/>
+            <!-- Animated Waving Flag Cloth -->
+            <path id="svgFlagCloth" d="M 22,12 Q 55,5 88,14 L 88,48 Q 55,39 22,46 Z" fill="var(--current-flag)">
+              <animate attributeName="d" 
+                values="M 22,12 Q 55,5 88,14 L 88,48 Q 55,39 22,46 Z;
+                        M 22,12 Q 55,19 88,10 L 88,44 Q 55,53 22,46 Z;
+                        M 22,12 Q 55,5 88,14 L 88,48 Q 55,39 22,46 Z" 
+                dur="2.5s" repeatCount="indefinite" />
+            </path>
+            <!-- Gentle highlight stripe on flag -->
+            <path d="M 22,12 Q 38,9 56,13 L 56,47 Q 38,43 22,46 Z" fill="#ffffff" opacity="0.2"/>
+          </svg>
+          <!-- Floating Weather Badge beside Flag -->
+          <div class="flag-weather-badge" id="flagWeatherBadge" title="當地即時氣候">
+            <span class="weather-icon-anim" id="weatherIconAnim">☀️</span>
+            <span class="weather-temp-badge" id="weatherTempBadge">28°C</span>
+          </div>
+        </div>
+
+        <!-- Flag Info -->
+        <div class="flag-title-group">
+          <div class="flag-name-badge">
+            <span class="flag-icon-dot">●</span>
+            <span id="txtFlagTitle">普通</span>
+          </div>
+          <div class="flag-meta-row">
+            <div class="aqi-badge-pill" id="txtAqiPill">AQI 65</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Outdoor Decision Super Badge -->
+      <div class="outdoor-hero-badge" id="outdoorBadge">
+        <div class="decision-left">
+          <div class="decision-emoji" id="decisionEmoji">🏃‍♂️</div>
+          <div class="decision-text-group">
+            <span class="decision-sub">校園戶外活動判定</span>
+            <span class="decision-main" id="decisionText">可以正常上室外課</span>
+          </div>
+        </div>
+        <div class="decision-sparkle" id="decisionSparkle">✨</div>
+      </div>
+    </div>
+
+    <!-- Advice Cards (Outdoor PE & Sensitive Group) -->
+    <div class="cute-advice-section" id="adviceSection">
+      <!-- PE & Outdoor Activity Card -->
+      <div class="cute-card pe-card" id="peCard">
+        <div class="cute-icon-badge" id="iconPe">⚽</div>
+        <div class="cute-card-content">
+          <div class="cute-card-title">體育課與大下課活動</div>
+          <div class="cute-card-body" id="txtActivityAdvice">
+            可正常進行戶外活動。體育課照常進行，提醒學生適時補充水分與防曬。
+          </div>
+        </div>
+      </div>
+
+      <!-- Sensitive Group Card -->
+      <div class="cute-card sensitive-card" id="sensitiveCard">
+        <div class="cute-icon-badge">🧸</div>
+        <div class="cute-card-content">
+          <div class="cute-card-title">過敏與敏感學童照護</div>
+          <div class="cute-card-body" id="txtSensitiveAdvice">
+            氣喘、過敏性鼻炎或呼吸道體質學生仍可正常活動，請隨時留意身體狀況。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detailed Pollutant Metrics Candy Grid -->
+    <div class="cute-metrics" id="metricsSection" style="display: none;">
+      <div class="metrics-header-row">
+        <div class="metrics-header-title">
+          <span>📊</span>
+          <span>即時空氣品質指標數值</span>
+        </div>
+      </div>
+      <div class="candy-grid">
+        <div class="candy-box">
+          <div class="candy-label">AQI 指標</div>
+          <div class="candy-val" id="valAqi">-</div>
+          <div class="candy-unit">指數</div>
+        </div>
+        <div class="candy-box">
+          <div class="candy-label">PM2.5</div>
+          <div class="candy-val" id="valPm25">-</div>
+          <div class="candy-unit">μg/m³</div>
+        </div>
+        <div class="candy-box">
+          <div class="candy-label">PM10</div>
+          <div class="candy-val" id="valPm10">-</div>
+          <div class="candy-unit">μg/m³</div>
+        </div>
+        <div class="candy-box">
+          <div class="candy-label">臭氧 O₃</div>
+          <div class="candy-val" id="valO3">-</div>
+          <div class="candy-unit">ppb</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Horizontal Banner Layout (when theme=banner) -->
+    <div class="banner-view" id="bannerView" style="display: none;">
+      <div class="banner-mascot">
+        <div style="font-size: 34px;" id="bannerMascotEmoji">🚩</div>
+      </div>
+      <div class="banner-center">
+        <div style="font-size: 14px; font-weight: 900; color: var(--current-flag);" id="bannerFlagTitle">黃色旗 (AQI 65)</div>
+        <div style="font-size: 11px; font-weight: 700; color: #64748b;" id="bannerStation">臺中市沙鹿測站</div>
+      </div>
+      <div class="banner-decision">
+        <div class="outdoor-hero-badge" style="padding: 6px 14px; border-radius: 12px;" id="bannerBadge">
+          <span style="font-size: 14px; font-weight: 900;" id="bannerDecisionText">🏃‍♂️ 可以正常上室外課</span>
+        </div>
+      </div>
+      <div class="banner-advice" id="bannerAdvice">
+        室外體育課照常進行，提醒學生適度補充水分。敏感體質學童留意呼吸狀況。
+      </div>
+    </div>
+
+    <!-- Mini Badge Layout (when theme=badge) -->
+    <div class="badge-view" id="badgeView" style="display: none; width: 100%; align-items: center; justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 26px;" id="badgeEmoji">🚩</span>
+        <div>
+          <div style="font-weight: 900; font-size: 13px; color: var(--current-flag);" id="badgeTitle">黃色旗 (AQI 65)</div>
+          <div style="font-size: 10.5px; font-weight: 700; color: #64748b;" id="badgeStation">沙鹿測站</div>
+        </div>
+      </div>
+      <div class="outdoor-hero-badge" style="padding: 5px 10px; border-radius: 10px; font-size: 12px; font-weight: 900;" id="badgeStatus">
+        🏃‍♂️ 可正常室外課
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Educational Modal: Ministry of Education Flag Guidelines -->
+  <div class="cute-modal-overlay" id="cuteModal">
+    <div class="cute-modal">
+      <div class="cute-modal-header">
+        <div class="cute-modal-title">
+          <span>🚩</span>
+          <span>教育部校園空氣品質旗幟防護指引</span>
+        </div>
+        <button class="cute-modal-close" id="btnCloseModal">&times;</button>
+      </div>
+      <div class="cute-modal-body">
+        <p style="margin-bottom: 12px; color: #475569; font-weight: 700; font-size: 13px;">
+          學校每日依據環境部即時 AQI 指標，在校園升掛對應顏色旗幟，保障師生活動健康：
+        </p>
+
+        <!-- Green -->
+        <div class="cute-flag-row" style="background: #eafff3; border-color: #99f6c4;">
+          <div class="cute-flag-dot" style="background: #05c46b; color: white;">🟢</div>
+          <div>
+            <div style="font-weight: 900; color: #007a3d;">綠色旗 (AQI 0～50) 良好</div>
+            <div style="font-size: 12px; color: #334155; font-weight: 600;">適合正常進行戶外體育課、大下課活動；敏感學童正常活動。</div>
+          </div>
+        </div>
+
+        <!-- Yellow -->
+        <div class="cute-flag-row" style="background: #fffbeb; border-color: #fed780;">
+          <div class="cute-flag-dot" style="background: #ffb100; color: white;">🟡</div>
+          <div>
+            <div style="font-weight: 900; color: #a16207;">黃色旗 (AQI 51～100) 普通</div>
+            <div style="font-size: 12px; color: #334155; font-weight: 600;">可正常進行戶外體育課，提醒學生補水防曬；敏感學生留意呼吸狀況。</div>
+          </div>
+        </div>
+
+        <!-- Orange -->
+        <div class="cute-flag-row" style="background: #fff4ed; border-color: #ffc4a8;">
+          <div class="cute-flag-dot" style="background: #ff793f; color: white;">🟠</div>
+          <div>
+            <div style="font-weight: 900; color: #c2410c;">橘色旗 (AQI 101～150) 對敏感族群不健康</div>
+            <div style="font-size: 12px; color: #334155; font-weight: 600;">宜減少劇烈跑步運動；敏感性學童宜留在室內或配戴口罩。</div>
+          </div>
+        </div>
+
+        <!-- Red -->
+        <div class="cute-flag-row" style="background: #fff0f0; border-color: #ffb8b8;">
+          <div class="cute-flag-dot" style="background: #ff3838; color: white;">🔴</div>
+          <div>
+            <div style="font-weight: 900; color: #b91c1c;">紅色旗 (AQI 151～200) 對所有族群不健康</div>
+            <div style="font-size: 12px; color: #334155; font-weight: 600;">室外體育課建議移至室內活動中心或延期，教室適度關門窗。</div>
+          </div>
+        </div>
+
+        <!-- Purple -->
+        <div class="cute-flag-row" style="background: #fcf0ff; border-color: #eab4ff;">
+          <div class="cute-flag-dot" style="background: #be2edd; color: white;">🟣</div>
+          <div>
+            <div style="font-weight: 900; color: #7e22ce;">紫色旗 (AQI 201～300) 非常不健康</div>
+            <div style="font-size: 12px; color: #334155; font-weight: 600;">應立即停止所有戶外活動！課程全數移至室內，緊閉門窗開啟清淨設備。</div>
+          </div>
+        </div>
+
+        <!-- Maroon -->
+        <div class="cute-flag-row" style="background: #fff0f3; border-color: #f8a5b8;">
+          <div class="cute-flag-dot" style="background: #7e0023; color: white;">🟤</div>
+          <div>
+            <div style="font-weight: 900; color: #500724;">褐紅旗 (AQI 301～500) 危害</div>
+            <div style="font-size: 12px; color: #334155; font-weight: 600;">全面停止戶外活動，全體人員留置室內，視規定評估緊急應變作業。</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 14px; font-size: 11.5px; color: #64748b; line-height: 1.4; font-weight: 600;">
+          * 資料依據：教育部高級中等以下學校因應空品惡化處理措施作業流程與環境部監測數據。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // URL Query Parameter Helper
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentSiteId = urlParams.get('site') || '26'; // Default Shalu (沙鹿)
+    const ALL_STATIONS = [{"countyName": "基隆市", "countyCode": "Keelung", "stations": [{"id": "46", "name": "基隆"}]}, {"countyName": "臺北市", "countyCode": "Taipei", "stations": [{"id": "5", "name": "士林"}, {"id": "6", "name": "大同"}, {"id": "11", "name": "中山"}, {"id": "16", "name": "古亭"}, {"id": "29", "name": "松山"}, {"id": "54", "name": "陽明"}, {"id": "62", "name": "萬華"}]}, {"countyName": "新北市", "countyCode": "Newtaipei", "stations": [{"id": "2", "name": "三重"}, {"id": "4", "name": "土城"}, {"id": "19", "name": "永和"}, {"id": "22", "name": "汐止"}, {"id": "30", "name": "板橋"}, {"id": "31", "name": "林口"}, {"id": "48", "name": "淡水"}, {"id": "53", "name": "菜寮"}, {"id": "56", "name": "新店"}, {"id": "57", "name": "新莊"}, {"id": "91", "name": "新北（樹林）"}, {"id": "96", "name": "富貴角"}]}, {"countyName": "桃園市", "countyCode": "Taoyuan", "stations": [{"id": "8", "name": "大園"}, {"id": "12", "name": "中壢"}, {"id": "18", "name": "平鎮"}, {"id": "43", "name": "桃園"}, {"id": "73", "name": "龍潭"}, {"id": "76", "name": "觀音"}]}, {"countyName": "新竹市", "countyCode": "Hsinchu_city", "stations": [{"id": "55", "name": "新竹"}]}, {"countyName": "新竹縣", "countyCode": "Hsinchu", "stations": [{"id": "24", "name": "竹東"}, {"id": "52", "name": "湖口"}]}, {"countyName": "苗栗縣", "countyCode": "Miaoli", "stations": [{"id": "3", "name": "三義"}, {"id": "41", "name": "苗栗"}, {"id": "72", "name": "頭份"}]}, {"countyName": "臺中市", "countyCode": "Taichung", "stations": [{"id": "7", "name": "大里"}, {"id": "25", "name": "西屯"}, {"id": "26", "name": "沙鹿"}, {"id": "28", "name": "忠明"}, {"id": "74", "name": "豐原"}, {"id": "142", "name": "臺灣大道"}]}, {"countyName": "南投縣", "countyCode": "Nantou", "stations": [{"id": "23", "name": "竹山"}, {"id": "37", "name": "南投"}, {"id": "42", "name": "埔里"}, {"id": "86", "name": "南投（鹿谷）"}]}, {"countyName": "彰化縣", "countyCode": "Changhua", "stations": [{"id": "1", "name": "二林"}, {"id": "64", "name": "彰化"}, {"id": "70", "name": "線西"}, {"id": "136", "name": "大城"}, {"id": "139", "name": "員林"}]}, {"countyName": "雲林縣", "countyCode": "Yunlin", "stations": [{"id": "14", "name": "斗六"}, {"id": "47", "name": "崙背"}, {"id": "49", "name": "麥寮"}, {"id": "65", "name": "臺西"}]}, {"countyName": "嘉義市", "countyCode": "Chiayi_city", "stations": [{"id": "63", "name": "嘉義"}]}, {"countyName": "嘉義縣", "countyCode": "Chiayi", "stations": [{"id": "21", "name": "朴子"}, {"id": "58", "name": "新港"}]}, {"countyName": "臺南市", "countyCode": "Tainan", "stations": [{"id": "20", "name": "安南"}, {"id": "50", "name": "善化"}, {"id": "59", "name": "新營"}, {"id": "67", "name": "臺南"}, {"id": "140", "name": "林森"}]}, {"countyName": "高雄市", "countyCode": "Kaohsiung", "stations": [{"id": "9", "name": "大寮"}, {"id": "10", "name": "小港"}, {"id": "13", "name": "仁武"}, {"id": "17", "name": "左營"}, {"id": "32", "name": "林園"}, {"id": "35", "name": "前金"}, {"id": "36", "name": "前鎮"}, {"id": "40", "name": "美濃"}, {"id": "51", "name": "復興"}, {"id": "60", "name": "楠梓"}, {"id": "68", "name": "鳳山"}, {"id": "71", "name": "橋頭"}]}, {"countyName": "屏東縣", "countyCode": "Pingtung", "stations": [{"id": "38", "name": "屏東"}, {"id": "39", "name": "恆春"}, {"id": "69", "name": "潮州"}, {"id": "87", "name": "屏東（琉球）"}, {"id": "93", "name": "屏東（枋山）"}]}, {"countyName": "宜蘭縣", "countyCode": "Yilan", "stations": [{"id": "15", "name": "冬山"}, {"id": "27", "name": "宜蘭"}]}, {"countyName": "花蓮縣", "countyCode": "Hualien", "stations": [{"id": "33", "name": "花蓮"}]}, {"countyName": "臺東縣", "countyCode": "Taitung", "stations": [{"id": "66", "name": "臺東"}, {"id": "75", "name": "關山"}]}, {"countyName": "澎湖縣", "countyCode": "Penghu", "stations": [{"id": "44", "name": "馬公"}]}, {"countyName": "金門縣", "countyCode": "Kinmen", "stations": [{"id": "34", "name": "金門"}]}, {"countyName": "連江縣", "countyCode": "Lienchiang", "stations": [{"id": "45", "name": "馬祖"}]}];
+
+    function populateStationDropdown(selectedId) {
+      const select = document.getElementById('stationSelect');
+      if (!select) return;
+      select.innerHTML = '';
+
+      // Prioritize Taichung at top, then other counties
+      const sorted = [...ALL_STATIONS].sort((a, b) => {
+        if (a.countyName === '臺中市') return -1;
+        if (b.countyName === '臺中市') return 1;
+        return 0;
+      });
+
+      sorted.forEach(c => {
+        if (!c.stations || c.stations.length === 0) return;
+        const grp = document.createElement('optgroup');
+        grp.label = `📍 ${c.countyName}`;
+        c.stations.forEach(st => {
+          const opt = document.createElement('option');
+          opt.value = st.id;
+          opt.textContent = `${st.name}測站 (${c.countyName})`;
+          if (String(st.id) === String(selectedId) || st.name === selectedId) {
+            opt.selected = true;
+          }
+          grp.appendChild(opt);
+        });
+        select.appendChild(grp);
+      });
+
+      select.value = selectedId;
+    }
+    const themeParam = urlParams.get('theme') || 'card'; // card, compact, banner, badge
+    const simAqiParam = urlParams.get('sim_aqi'); // optional simulation
+    const refreshSecParam = parseInt(urlParams.get('refresh') || '600', 10); // default 10 min
+
+    // Apply Theme
+    if (themeParam === 'compact') {
+      document.body.classList.add('theme-compact');
+    } else if (themeParam === 'banner') {
+      document.body.classList.add('theme-banner');
+      document.getElementById('bannerView').style.display = 'flex';
+    } else if (themeParam === 'badge') {
+      document.body.classList.add('theme-badge');
+      document.getElementById('badgeView').style.display = 'flex';
+    }
+
+    // Modular visibility toggles via URL query params
+    const showStation = urlParams.get('show_station') !== '0';
+    const showFlag = urlParams.get('show_flag') !== '0';
+    const showTime = urlParams.get('show_time') !== '0';
+    const showWeather = urlParams.get('show_weather') !== '0';
+    const showDecision = urlParams.get('show_decision') !== '0';
+    const showActivity = urlParams.get('show_activity') !== '0';
+    const showSensitive = urlParams.get('show_sensitive') !== '0';
+    const showMetrics = urlParams.get('show_metrics') === '1' || urlParams.get('show_pollutants') === '1';
+
+    const elBanner = document.getElementById('topCuteBanner');
+    if (elBanner && !showStation) elBanner.style.display = 'none';
+
+    const elFlagRow = document.getElementById('flagHeroRow');
+    if (elFlagRow && !showFlag) elFlagRow.style.display = 'none';
+
+    const elFlagWeather = document.getElementById('flagWeatherBadge');
+    if (elFlagWeather && !showWeather) elFlagWeather.style.display = 'none';
+
+    const elWeatherPill = document.getElementById('weatherPill');
+    if (elWeatherPill && !showWeather) elWeatherPill.style.display = 'none';
+
+    const elTimePill = document.getElementById('timePill');
+    if (elTimePill && !showTime) elTimePill.style.display = 'none';
+
+    const elDecision = document.getElementById('outdoorBadge');
+    if (elDecision && !showDecision) elDecision.style.display = 'none';
+
+    const elHeroStage = document.getElementById('heroCuteStage');
+    if (elHeroStage && !showFlag && !showDecision) elHeroStage.style.display = 'none';
+
+    const elPeCard = document.getElementById('peCard');
+    if (elPeCard && !showActivity) elPeCard.style.display = 'none';
+
+    const elSensitiveCard = document.getElementById('sensitiveCard');
+    if (elSensitiveCard && !showSensitive) elSensitiveCard.style.display = 'none';
+
+    const elAdviceSection = document.getElementById('adviceSection');
+    if (elAdviceSection && !showActivity && !showSensitive) elAdviceSection.style.display = 'none';
+
+    const elMetricsSection = document.getElementById('metricsSection');
+    if (elMetricsSection) {
+      elMetricsSection.style.display = showMetrics ? 'block' : 'none';
+    }
+
+    // Modal Control
+    const btnShowModal = document.getElementById('btnShowModal');
+    const btnCloseModal = document.getElementById('btnCloseModal');
+    const cuteModal = document.getElementById('cuteModal');
+
+    if (btnShowModal && cuteModal) {
+      btnShowModal.addEventListener('click', () => cuteModal.classList.add('active'));
+    }
+    if (btnCloseModal && cuteModal) {
+      btnCloseModal.addEventListener('click', () => cuteModal.classList.remove('active'));
+    }
+    if (cuteModal) {
+      cuteModal.addEventListener('click', (e) => {
+        if (e.target === cuteModal) cuteModal.classList.remove('active');
+      });
+    }
+
+    // Vivid & Cute Level Styles
+    const THEME_STYLES = {
+      'green': {
+        color: '#05c46b',
+        bg: '#eafff3',
+        border: '#99f6c4',
+        badge: 'linear-gradient(135deg, #05c46b 0%, #00a352 100%)',
+        shadow: 'rgba(5, 196, 107, 0.35)',
+        text: '#006633',
+        emoji: '🏃‍♂️',
+        sparkle: '⭐',
+        mascotFace: 'happy',
+        saying: '「今天空氣超棒！大家快去操場跑步踢球、盡情大下課囉！⚽✨」',
+        peIcon: '⚽',
+        decisionTitle: '適合正常上室外課'
+      },
+      'yellow': {
+        color: '#ffb100',
+        bg: '#fffbeb',
+        border: '#fed780',
+        badge: 'linear-gradient(135deg, #ffb800 0%, #f39c12 100%)',
+        shadow: 'rgba(255, 177, 0, 0.35)',
+        text: '#8d4f00',
+        emoji: '🏃‍♂️',
+        sparkle: '🥤',
+        mascotFace: 'happy',
+        saying: '「空氣普通還OK！室外體育課照常進行，記得多喝水補充體力喔！💧」',
+        peIcon: '🥤',
+        decisionTitle: '可以正常上室外課'
+      },
+      'orange': {
+        color: '#ff793f',
+        bg: '#fff4ed',
+        border: '#ffc4a8',
+        badge: 'linear-gradient(135deg, #ff793f 0%, #e55039 100%)',
+        shadow: 'rgba(255, 121, 63, 0.35)',
+        text: '#993300',
+        emoji: '⚠️',
+        sparkle: '😷',
+        mascotFace: 'masked',
+        saying: '「敏感同學注意～宜減少劇烈快跑，在樹蔭或走廊散散步、戴上口罩喔！🍃」',
+        peIcon: '👟',
+        decisionTitle: '宜減少長時間劇烈運動'
+      },
+      'red': {
+        color: '#ff3838',
+        bg: '#fff0f0',
+        border: '#ffb8b8',
+        badge: 'linear-gradient(135deg, #ff4d4d 0%, #c41818 100%)',
+        shadow: 'rgba(255, 56, 56, 0.35)',
+        text: '#990000',
+        emoji: '🚫',
+        sparkle: '🏛️',
+        mascotFace: 'worried',
+        saying: '「注意警報！室外體育課請移至室內活動中心或教室進行，門窗適度關閉！🛑」',
+        peIcon: '🏛️',
+        decisionTitle: '室外課建議移至室內進行'
+      },
+      'purple': {
+        color: '#be2edd',
+        bg: '#fcf0ff',
+        border: '#eab4ff',
+        badge: 'linear-gradient(135deg, #be2edd 0%, #881b9a 100%)',
+        shadow: 'rgba(190, 46, 221, 0.35)',
+        text: '#660080',
+        emoji: '🛑',
+        sparkle: '🚨',
+        mascotFace: 'worried',
+        saying: '「全面進室內！停止所有戶外活動，緊閉教室門窗並開啟清淨機，保護呼吸道！🔒」',
+        peIcon: '🛑',
+        decisionTitle: '立即全面停止戶外活動'
+      },
+      'maroon': {
+        color: '#7e0023',
+        bg: '#fff0f3',
+        border: '#f8a5b8',
+        badge: 'linear-gradient(135deg, #8c0c32 0%, #59041b 100%)',
+        shadow: 'rgba(126, 0, 35, 0.35)',
+        text: '#500724',
+        emoji: '🚨',
+        sparkle: '🛡️',
+        mascotFace: 'worried',
+        saying: '「校園緊急應變！嚴禁戶外走動，留在室內落實重度防護，聽從學校廣播指揮！⚠️」',
+        peIcon: '🚨',
+        decisionTitle: '危害等級！全體留在室內'
+      },
+      'gray': {
+        color: '#8395a7',
+        bg: '#f1f2f6',
+        border: '#c8d6e5',
+        badge: 'linear-gradient(135deg, #8395a7 0%, #576574 100%)',
+        shadow: 'rgba(131, 149, 167, 0.35)',
+        text: '#2f3542',
+        emoji: 'ℹ️',
+        sparkle: '⏳',
+        mascotFace: 'happy',
+        saying: '「監測站資料連線中～請稍候片刻，維持一般正常校園作息。📝」',
+        peIcon: 'ℹ️',
+        decisionTitle: '監測數據更新中'
+      }
+    };
+
+    // Update Mascot Expression
+    function updateMascotFace(faceType) {
+      const leftEye = document.getElementById('svgLeftEye');
+      const rightEye = document.getElementById('svgRightEye');
+      const mouth = document.getElementById('svgMouth');
+      const mask = document.getElementById('svgMask');
+
+      if (!leftEye || !rightEye || !mouth || !mask) return;
+
+      if (faceType === 'happy') {
+        leftEye.setAttribute('d', 'M 36,44 Q 40,38 44,44');
+        rightEye.setAttribute('d', 'M 56,44 Q 60,38 64,44');
+        mouth.style.display = 'block';
+        mouth.setAttribute('d', 'M 46,50 Q 50,56 54,50');
+        mask.style.display = 'none';
+      } else if (faceType === 'masked') {
+        leftEye.setAttribute('d', 'M 36,43 Q 40,38 44,43');
+        rightEye.setAttribute('d', 'M 56,43 Q 60,38 64,43');
+        mouth.style.display = 'none';
+        mask.style.display = 'block';
+      } else if (faceType === 'worried') {
+        leftEye.setAttribute('d', 'M 36,41 L 44,45 M 36,45 L 44,41'); // > eye
+        rightEye.setAttribute('d', 'M 56,45 L 64,41 M 56,41 L 64,45'); // < eye
+        mouth.style.display = 'none';
+        mask.style.display = 'block';
+      }
+    }
+
+    // Render Widget Data
+    function renderWidgetData(data) {
+      const flagInfo = data.flag || {};
+      const flagClass = flagInfo.flagClass || 'yellow';
+      const cfg = THEME_STYLES[flagClass] || THEME_STYLES['yellow'];
+
+      // Apply CSS Theme Variables
+      document.documentElement.style.setProperty('--current-flag', cfg.color);
+      document.documentElement.style.setProperty('--current-bg', cfg.bg);
+      document.documentElement.style.setProperty('--current-border', cfg.border);
+      document.documentElement.style.setProperty('--current-badge', cfg.badge);
+      document.documentElement.style.setProperty('--current-shadow', cfg.shadow);
+      document.documentElement.style.setProperty('--current-text', cfg.text);
+
+      // Station & Time
+      const stationSelect = document.getElementById('stationSelect');
+      if (stationSelect && data.siteid) {
+        stationSelect.value = data.siteid;
+      }
+      if (document.getElementById('txtStation')) document.getElementById('txtStation').textContent = `${data.sitename || '沙鹿'}測站`;
+      if (document.getElementById('txtCounty')) document.getElementById('txtCounty').textContent = data.county || '臺中市';
+      if (document.getElementById('txtTime')) document.getElementById('txtTime').textContent = `${data.date ? data.date.split(' ')[1] || data.date : '即時'} 發布`;
+
+      // Weather Status
+      if (data.weather) {
+        const w = data.weather;
+        const tempStr = `${Math.round(w.temp)}${w.tempUnit || '°C'}`;
+        const icon = w.icon || '☀️';
+        const desc = w.text || '晴朗';
+
+        if (document.getElementById('weatherIconAnim')) document.getElementById('weatherIconAnim').textContent = icon;
+        if (document.getElementById('weatherTempBadge')) document.getElementById('weatherTempBadge').textContent = tempStr;
+        if (document.getElementById('weatherMetaIcon')) document.getElementById('weatherMetaIcon').textContent = icon;
+        if (document.getElementById('txtWeatherDesc')) document.getElementById('txtWeatherDesc').textContent = `${desc} ${tempStr}`;
+        if (document.getElementById('flagWeatherBadge')) document.getElementById('flagWeatherBadge').setAttribute('title', `當地即時氣候：${desc} ${tempStr}`);
+      }
+
+      // Flag Impact Level & Title (No "XX色旗", only the impact event/level)
+      const impactLevel = flagInfo.level ? flagInfo.level.split(' ')[0] : (flagInfo.status || '普通');
+      if (document.getElementById('txtFlagTitle')) document.getElementById('txtFlagTitle').textContent = impactLevel;
+      if (document.getElementById('txtAqiPill')) document.getElementById('txtAqiPill').textContent = `AQI ${data.aqi}`;
+
+      // Outdoor Decision Super Badge
+      if (document.getElementById('decisionEmoji')) document.getElementById('decisionEmoji').textContent = cfg.emoji;
+      if (document.getElementById('decisionText')) document.getElementById('decisionText').textContent = flagInfo.outdoorBadge || cfg.decisionTitle;
+      if (document.getElementById('decisionSparkle')) document.getElementById('decisionSparkle').textContent = cfg.sparkle;
+
+      // Cards
+      if (document.getElementById('iconPe')) document.getElementById('iconPe').textContent = cfg.peIcon;
+      if (document.getElementById('txtActivityAdvice')) document.getElementById('txtActivityAdvice').textContent = flagInfo.activityAdvice || '';
+      if (document.getElementById('txtSensitiveAdvice')) document.getElementById('txtSensitiveAdvice').textContent = flagInfo.sensitiveAdvice || '';
+
+      // Candy Metrics (Real-time air quality metrics)
+      if (document.getElementById('valAqi')) document.getElementById('valAqi').textContent = data.aqi || '-';
+      if (document.getElementById('valPm25')) document.getElementById('valPm25').textContent = data.pm25 || '-';
+      if (document.getElementById('valPm10')) document.getElementById('valPm10').textContent = data.pm10 || '-';
+      if (document.getElementById('valO3')) document.getElementById('valO3').textContent = data.o3 || '-';
+      if (document.getElementById('txtPollutantTag')) document.getElementById('txtPollutantTag').textContent = `指標物：${data.pollutant || '細懸浮微粒'}`;
+
+      // Banner View (if active)
+      if (themeParam === 'banner') {
+        if (document.getElementById('bannerFlagTitle')) document.getElementById('bannerFlagTitle').textContent = `${impactLevel} (AQI ${data.aqi})`;
+        if (document.getElementById('bannerStation')) document.getElementById('bannerStation').textContent = `${data.county} ${data.sitename}測站`;
+        if (document.getElementById('bannerDecisionText')) document.getElementById('bannerDecisionText').textContent = `${cfg.emoji} ${flagInfo.outdoorBadge || cfg.decisionTitle}`;
+        if (document.getElementById('bannerAdvice')) document.getElementById('bannerAdvice').textContent = (cfg.saying || '').replace(/[「」]/g, '');
+        if (document.getElementById('bannerMascotEmoji')) document.getElementById('bannerMascotEmoji').textContent = cfg.emoji;
+      }
+
+      // Badge View (if active)
+      if (themeParam === 'badge') {
+        if (document.getElementById('badgeTitle')) document.getElementById('badgeTitle').textContent = `${impactLevel} (AQI ${data.aqi})`;
+        if (document.getElementById('badgeStation')) document.getElementById('badgeStation').textContent = `${data.sitename}測站`;
+        if (document.getElementById('badgeStatus')) document.getElementById('badgeStatus').innerHTML = `${cfg.emoji} ${flagInfo.outdoorBadge || cfg.decisionTitle}`;
+        if (document.getElementById('badgeEmoji')) document.getElementById('badgeEmoji').textContent = cfg.emoji;
+      }
+
+      // Remove loading shimmer
+      if (document.getElementById('cuteApp')) document.getElementById('cuteApp').classList.remove('loading-shimmer');
+    }
+
+    function calculateClientFlagAdvice(aqiNum) {
+      if (aqiNum <= 50) {
+        return {
+          aqi: aqiNum,
+          level: '良好 (Good)',
+          flagColor: '#009966',
+          flagClass: 'green',
+          status: '空氣品質良好',
+          outdoorBadge: '適合室外課',
+          activityAdvice: '適合正常進行戶外活動。室外體育課、大下課活動、戶外教學及各項動態體能競賽照常舉行。',
+          sensitiveAdvice: '敏感性族群學生可正常進行各項戶外體育與活動。'
+        };
+      } else if (aqiNum <= 100) {
+        return {
+          aqi: aqiNum,
+          level: '普通 (Moderate)',
+          flagColor: '#e0c000',
+          flagClass: 'yellow',
+          status: '空氣品質普通',
+          outdoorBadge: '可正常室外課',
+          activityAdvice: '可正常進行戶外活動。室外體育課照常進行，提醒學生運動後適時補充水分，注意防曬與調適。',
+          sensitiveAdvice: '敏感性族群學生（氣喘、呼吸道或過敏體質）仍可正常活動，但請留意自身是否有咳嗽或呼吸急促狀況。'
+        };
+      } else if (aqiNum <= 150) {
+        return {
+          aqi: aqiNum,
+          level: '對敏感族群不健康 (USG)',
+          flagColor: '#ff9933',
+          flagClass: 'orange',
+          status: '敏感族群須注意',
+          outdoorBadge: '宜減少劇烈運動',
+          activityAdvice: '一般學生仍可進行戶外活動，但宜減少長時間劇烈運動，體育課可適度降低活動強度、增加休息時間。',
+          sensitiveAdvice: '敏感性族群師生宜減少戶外活動及體力消耗，留在室內或進行靜態活動；必要外出建議配戴口罩。'
+        };
+      } else if (aqiNum <= 200) {
+        return {
+          aqi: aqiNum,
+          level: '對所有族群不健康 (Unhealthy)',
+          flagColor: '#cc0033',
+          flagClass: 'red',
+          status: '對所有人不健康',
+          outdoorBadge: '建議改室內課',
+          activityAdvice: '應避免長時間劇烈戶外運動。室外體育課宜調整至室內進行（如活動中心、健康教室教學），或改為低運動量活動。',
+          sensitiveAdvice: '敏感性族群師生應留在室內，避免體力消耗活動；外出務必配戴口罩，氣喘學童請備妥吸入劑。'
+        };
+      } else if (aqiNum <= 300) {
+        return {
+          aqi: aqiNum,
+          level: '非常不健康 (Very Unhealthy)',
+          flagColor: '#660099',
+          flagClass: 'purple',
+          status: '非常不良',
+          outdoorBadge: '停止戶外活動',
+          activityAdvice: '應立即停止所有戶外活動！體育課與戶外課程一律改在室內進行或延期辦理，全體留在室內。',
+          sensitiveAdvice: '敏感性族群師生嚴禁戶外活動，留在室內休息，加強健康照護。'
+        };
+      } else {
+        return {
+          aqi: aqiNum,
+          level: '危害 (Hazardous)',
+          flagColor: '#7e0023',
+          flagClass: 'maroon',
+          status: '危害健康',
+          outdoorBadge: '嚴禁戶外活動',
+          activityAdvice: '應全面停止戶外活動，人員留置室內防護，學校視通報評估啟動緊急應變或停課措施。',
+          sensitiveAdvice: '所有師生留在室內，嚴禁任何體能活動，落實重度防護。'
+        };
+      }
+    }
+
+    // Load Data
+    async function loadAirQuality() {
+      const cuteApp = document.getElementById('cuteApp');
+      const btnRefresh = document.getElementById('btnRefresh');
+      if (btnRefresh) btnRefresh.classList.add('spinning');
+      if (cuteApp) cuteApp.classList.add('loading-shimmer');
+
+      let apiUrl = `/api/air-quality?site=${encodeURIComponent(currentSiteId)}`;
+      if (simAqiParam) {
+        apiUrl += `&sim_aqi=${encodeURIComponent(simAqiParam)}`;
+      }
+
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        renderWidgetData(data);
+      } catch (err) {
+        console.warn('API error, trying static data fallback:', err);
+        try {
+          const staticRes = await fetch('./data/air-quality.json');
+          if (staticRes.ok) {
+            const staticPayload = await staticRes.json();
+            const stationData = staticPayload.stations && staticPayload.stations[currentSiteId]
+              ? JSON.parse(JSON.stringify(staticPayload.stations[currentSiteId]))
+              : JSON.parse(JSON.stringify(Object.values(staticPayload.stations || {})[0]));
+            if (stationData) {
+              if (simAqiParam) {
+                const aqiNum = parseInt(simAqiParam, 10);
+                stationData.aqi = String(aqiNum);
+                stationData.pm25 = String(Math.round(aqiNum * 0.35));
+                stationData.pm10 = String(Math.round(aqiNum * 0.7));
+                stationData.o3 = String(Math.round(aqiNum * 0.8));
+                stationData.flag = calculateClientFlagAdvice(aqiNum);
+              }
+              renderWidgetData(stationData);
+              return;
+            }
+          }
+        } catch (staticErr) {
+          console.warn('Static data fallback failed:', staticErr);
+        }
+
+        renderWidgetData({
+          sitename: '沙鹿',
+          county: '臺中市',
+          date: '13:00',
+          aqi: '65',
+          pm25: '15',
+          pm10: '44',
+          o3: '76',
+          pollutant: '細懸浮微粒 (PM2.5)',
+          flag: {
+            aqi: 65,
+            flagName: '黃色旗',
+            flagClass: 'yellow',
+            level: '普通',
+            outdoorBadge: '可以正常上室外課',
+            activityAdvice: '適合正常進行戶外活動。室外體育課照常進行，提醒學生運動後多補充水分！',
+            sensitiveAdvice: '氣喘或過敏體質同學仍可正常活動，請留意自身呼吸狀況。'
+          }
+        });
+      } finally {
+        if (btnRefresh) {
+          setTimeout(() => btnRefresh.classList.remove('spinning'), 500);
+        }
+      }
+    }
+
+    // Refresh Countdown
+    let remainingSeconds = refreshSecParam;
+    function startCountdown() {
+      const txtCountdown = document.getElementById('txtRefreshCountdown');
+      setInterval(() => {
+        remainingSeconds--;
+        if (remainingSeconds <= 0) {
+          remainingSeconds = refreshSecParam;
+          loadAirQuality();
+        }
+        const mins = Math.floor(remainingSeconds / 60);
+        const secs = remainingSeconds % 60;
+        if (txtCountdown) {
+          txtCountdown.textContent = mins > 0 ? `${mins}分後更新` : `${secs}秒後更新`;
+        }
+      }, 1000);
+    }
+
+    const btnRefresh = document.getElementById('btnRefresh');
+    if (btnRefresh) {
+      btnRefresh.addEventListener('click', () => {
+        remainingSeconds = refreshSecParam;
+        loadAirQuality();
+      });
+    }
+
+    // Populate station dropdown and bind change listener
+    populateStationDropdown(currentSiteId);
+    const stationSelectEl = document.getElementById('stationSelect');
+    if (stationSelectEl) {
+      stationSelectEl.addEventListener('change', (e) => {
+        currentSiteId = e.target.value;
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.set('site', currentSiteId);
+        window.history.replaceState({}, '', newUrl);
+        loadAirQuality();
+      });
+    }
+
+    loadAirQuality();
+    startCountdown();
+  </script>
+</body>
+</html>

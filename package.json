@@ -1,0 +1,19 @@
+{
+  "name": "campus-air-quality-flag-widget",
+  "version": "1.0.0",
+  "description": "臺灣校園空氣品質監測與空汙旗幟產生器 - 學校網站專用即時內嵌小工具",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "air-quality",
+    "aqi",
+    "taiwan",
+    "school-flag",
+    "moenv",
+    "widget"
+  ],
+  "author": "Antigravity",
+  "license": "MIT"
+}

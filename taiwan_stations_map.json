@@ -1,0 +1,470 @@
+[
+  {
+    "countyName": "基隆市",
+    "countyCode": "Keelung",
+    "stations": [
+      {
+        "id": "46",
+        "name": "基隆"
+      }
+    ]
+  },
+  {
+    "countyName": "臺北市",
+    "countyCode": "Taipei",
+    "stations": [
+      {
+        "id": "5",
+        "name": "士林"
+      },
+      {
+        "id": "6",
+        "name": "大同"
+      },
+      {
+        "id": "11",
+        "name": "中山"
+      },
+      {
+        "id": "16",
+        "name": "古亭"
+      },
+      {
+        "id": "29",
+        "name": "松山"
+      },
+      {
+        "id": "54",
+        "name": "陽明"
+      },
+      {
+        "id": "62",
+        "name": "萬華"
+      }
+    ]
+  },
+  {
+    "countyName": "新北市",
+    "countyCode": "Newtaipei",
+    "stations": [
+      {
+        "id": "2",
+        "name": "三重"
+      },
+      {
+        "id": "4",
+        "name": "土城"
+      },
+      {
+        "id": "19",
+        "name": "永和"
+      },
+      {
+        "id": "22",
+        "name": "汐止"
+      },
+      {
+        "id": "30",
+        "name": "板橋"
+      },
+      {
+        "id": "31",
+        "name": "林口"
+      },
+      {
+        "id": "48",
+        "name": "淡水"
+      },
+      {
+        "id": "53",
+        "name": "菜寮"
+      },
+      {
+        "id": "56",
+        "name": "新店"
+      },
+      {
+        "id": "57",
+        "name": "新莊"
+      },
+      {
+        "id": "91",
+        "name": "新北（樹林）"
+      },
+      {
+        "id": "96",
+        "name": "富貴角"
+      }
+    ]
+  },
+  {
+    "countyName": "桃園市",
+    "countyCode": "Taoyuan",
+    "stations": [
+      {
+        "id": "8",
+        "name": "大園"
+      },
+      {
+        "id": "12",
+        "name": "中壢"
+      },
+      {
+        "id": "18",
+        "name": "平鎮"
+      },
+      {
+        "id": "43",
+        "name": "桃園"
+      },
+      {
+        "id": "73",
+        "name": "龍潭"
+      },
+      {
+        "id": "76",
+        "name": "觀音"
+      }
+    ]
+  },
+  {
+    "countyName": "新竹市",
+    "countyCode": "Hsinchu_city",
+    "stations": [
+      {
+        "id": "55",
+        "name": "新竹"
+      }
+    ]
+  },
+  {
+    "countyName": "新竹縣",
+    "countyCode": "Hsinchu",
+    "stations": [
+      {
+        "id": "24",
+        "name": "竹東"
+      },
+      {
+        "id": "52",
+        "name": "湖口"
+      }
+    ]
+  },
+  {
+    "countyName": "苗栗縣",
+    "countyCode": "Miaoli",
+    "stations": [
+      {
+        "id": "3",
+        "name": "三義"
+      },
+      {
+        "id": "41",
+        "name": "苗栗"
+      },
+      {
+        "id": "72",
+        "name": "頭份"
+      }
+    ]
+  },
+  {
+    "countyName": "臺中市",
+    "countyCode": "Taichung",
+    "stations": [
+      {
+        "id": "7",
+        "name": "大里"
+      },
+      {
+        "id": "25",
+        "name": "西屯"
+      },
+      {
+        "id": "26",
+        "name": "沙鹿"
+      },
+      {
+        "id": "28",
+        "name": "忠明"
+      },
+      {
+        "id": "74",
+        "name": "豐原"
+      },
+      {
+        "id": "142",
+        "name": "臺灣大道"
+      }
+    ]
+  },
+  {
+    "countyName": "南投縣",
+    "countyCode": "Nantou",
+    "stations": [
+      {
+        "id": "23",
+        "name": "竹山"
+      },
+      {
+        "id": "37",
+        "name": "南投"
+      },
+      {
+        "id": "42",
+        "name": "埔里"
+      },
+      {
+        "id": "86",
+        "name": "南投（鹿谷）"
+      }
+    ]
+  },
+  {
+    "countyName": "彰化縣",
+    "countyCode": "Changhua",
+    "stations": [
+      {
+        "id": "1",
+        "name": "二林"
+      },
+      {
+        "id": "64",
+        "name": "彰化"
+      },
+      {
+        "id": "70",
+        "name": "線西"
+      },
+      {
+        "id": "136",
+        "name": "大城"
+      },
+      {
+        "id": "139",
+        "name": "員林"
+      }
+    ]
+  },
+  {
+    "countyName": "雲林縣",
+    "countyCode": "Yunlin",
+    "stations": [
+      {
+        "id": "14",
+        "name": "斗六"
+      },
+      {
+        "id": "47",
+        "name": "崙背"
+      },
+      {
+        "id": "49",
+        "name": "麥寮"
+      },
+      {
+        "id": "65",
+        "name": "臺西"
+      }
+    ]
+  },
+  {
+    "countyName": "嘉義市",
+    "countyCode": "Chiayi_city",
+    "stations": [
+      {
+        "id": "63",
+        "name": "嘉義"
+      }
+    ]
+  },
+  {
+    "countyName": "嘉義縣",
+    "countyCode": "Chiayi",
+    "stations": [
+      {
+        "id": "21",
+        "name": "朴子"
+      },
+      {
+        "id": "58",
+        "name": "新港"
+      }
+    ]
+  },
+  {
+    "countyName": "臺南市",
+    "countyCode": "Tainan",
+    "stations": [
+      {
+        "id": "20",
+        "name": "安南"
+      },
+      {
+        "id": "50",
+        "name": "善化"
+      },
+      {
+        "id": "59",
+        "name": "新營"
+      },
+      {
+        "id": "67",
+        "name": "臺南"
+      },
+      {
+        "id": "140",
+        "name": "林森"
+      }
+    ]
+  },
+  {
+    "countyName": "高雄市",
+    "countyCode": "Kaohsiung",
+    "stations": [
+      {
+        "id": "9",
+        "name": "大寮"
+      },
+      {
+        "id": "10",
+        "name": "小港"
+      },
+      {
+        "id": "13",
+        "name": "仁武"
+      },
+      {
+        "id": "17",
+        "name": "左營"
+      },
+      {
+        "id": "32",
+        "name": "林園"
+      },
+      {
+        "id": "35",
+        "name": "前金"
+      },
+      {
+        "id": "36",
+        "name": "前鎮"
+      },
+      {
+        "id": "40",
+        "name": "美濃"
+      },
+      {
+        "id": "51",
+        "name": "復興"
+      },
+      {
+        "id": "60",
+        "name": "楠梓"
+      },
+      {
+        "id": "68",
+        "name": "鳳山"
+      },
+      {
+        "id": "71",
+        "name": "橋頭"
+      }
+    ]
+  },
+  {
+    "countyName": "屏東縣",
+    "countyCode": "Pingtung",
+    "stations": [
+      {
+        "id": "38",
+        "name": "屏東"
+      },
+      {
+        "id": "39",
+        "name": "恆春"
+      },
+      {
+        "id": "69",
+        "name": "潮州"
+      },
+      {
+        "id": "87",
+        "name": "屏東（琉球）"
+      },
+      {
+        "id": "93",
+        "name": "屏東（枋山）"
+      }
+    ]
+  },
+  {
+    "countyName": "宜蘭縣",
+    "countyCode": "Yilan",
+    "stations": [
+      {
+        "id": "15",
+        "name": "冬山"
+      },
+      {
+        "id": "27",
+        "name": "宜蘭"
+      }
+    ]
+  },
+  {
+    "countyName": "花蓮縣",
+    "countyCode": "Hualien",
+    "stations": [
+      {
+        "id": "33",
+        "name": "花蓮"
+      }
+    ]
+  },
+  {
+    "countyName": "臺東縣",
+    "countyCode": "Taitung",
+    "stations": [
+      {
+        "id": "66",
+        "name": "臺東"
+      },
+      {
+        "id": "75",
+        "name": "關山"
+      }
+    ]
+  },
+  {
+    "countyName": "澎湖縣",
+    "countyCode": "Penghu",
+    "stations": [
+      {
+        "id": "44",
+        "name": "馬公"
+      }
+    ]
+  },
+  {
+    "countyName": "金門縣",
+    "countyCode": "Kinmen",
+    "stations": [
+      {
+        "id": "34",
+        "name": "金門"
+      }
+    ]
+  },
+  {
+    "countyName": "連江縣",
+    "countyCode": "Lienchiang",
+    "stations": [
+      {
+        "id": "45",
+        "name": "馬祖"
+      }
+    ]
+  }
+]

@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校園空氣品質監測與空汙旗幟產生器 | 學校網站專用可愛小工具</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+TC:wght@400;600;700;900&display=swap');
+
+    :root {
+      --font-cute: 'Zen Maru Gothic', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-light: #eff6ff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --bg-candy: #f0f7ff;
+      --card-bg: #ffffff;
+      
+      --flag-green: #05c46b;
+      --flag-yellow: #ffb100;
+      --flag-orange: #ff793f;
+      --flag-red: #ff3838;
+      --flag-purple: #be2edd;
+      --flag-maroon: #7e0023;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-cute);
+      background-color: var(--bg-candy);
+      background-image: 
+        radial-gradient(#dbeafe 1.5px, transparent 1.5px),
+        radial-gradient(#fef3c7 1.5px, transparent 1.5px);
+      background-size: 32px 32px;
+      background-position: 0 0, 16px 16px;
+      color: var(--text-main);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    /* Cheerful Header */
+    header {
+      background: #ffffff;
+      border-bottom: 2.5px solid #dbeafe;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.08);
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+      animation: floatIcon 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatIcon {
+      0% { transform: translateY(0px) rotate(-3deg); }
+      100% { transform: translateY(-4px) rotate(4deg); }
+    }
+
+    .brand-title {
+      font-size: 19px;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 700;
+    }
+
+    .header-badges {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: #ecfdf5;
+      color: #047857;
+      border: 1.5px solid #a7f3d0;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 800;
+      box-shadow: 0 2px 6px rgba(16, 185, 129, 0.15);
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.35);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
+      border-bottom: 2px dashed #bfdbfe;
+      padding: 28px 24px 24px;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-inner {
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      background: #fef3c7;
+      color: #92400e;
+      border: 1.5px solid #fde68a;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 5px rgba(245, 158, 11, 0.15);
+    }
+
+    .hero-heading {
+      font-size: 28px;
+      font-weight: 900;
+      color: #0f172a;
+      margin-bottom: 10px;
+      line-height: 1.35;
+    }
+
+    .hero-heading span {
+      background: linear-gradient(135deg, #2563eb, #05c46b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 15px;
+      font-weight: 600;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    /* Main Grid Layout */
+    .app-layout {
+      max-width: 1400px;
+      margin: 28px auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 480px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 1060px) {
+      .app-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Card Panels */
+    .panel-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      border: 2px solid #e2e8f0;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+      overflow: hidden;
+      margin-bottom: 22px;
+      transition: all 0.25s;
+    }
+
+    .panel-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    .panel-header {
+      padding: 14px 20px;
+      background: #fafcff;
+      border-bottom: 1.5px solid #edf2f7;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .panel-title {
+      font-size: 15.5px;
+      font-weight: 900;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-number {
+      width: 26px;
+      height: 26px;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: white;
+      border-radius: 50%;
+      font-size: 13px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 6px rgba(37, 99, 235, 0.3);
+    }
+
+    .panel-body {
+      padding: 20px;
+    }
+
+    /* Form Controls */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    .select-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .form-select, .form-input {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 2px solid #cbd5e1;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+      background-color: #ffffff;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .form-select:focus, .form-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3.5px rgba(59, 130, 246, 0.2);
+    }
+
+    /* Quick Preset Chips */
+    .quick-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .chip-btn {
+      background: #f1f5f9;
+      border: 1.5px solid #e2e8f0;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 12px;
+      color: #334155;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+
+    .chip-btn:hover {
+      background: #e2e8f0;
+      transform: translateY(-1px);
+    }
+
+    .chip-btn.active-chip {
+      background: #dbeafe;
+      border-color: #60a5fa;
+      color: #1d4ed8;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+    }
+
+    /* Layout Theme Selection Cards */
+    .theme-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .theme-card {
+      border: 2.5px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .theme-card:hover {
+      border-color: #93c5fd;
+      transform: translateY(-2px);
+    }
+
+    .theme-card.active {
+      border-color: var(--primary);
+      background: #eff6ff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.2);
+      transform: scale(1.02);
+    }
+
+    .theme-card-title {
+      font-size: 14px;
+      font-weight: 900;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .theme-card-desc {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .theme-pill-tag {
+      font-size: 10px;
+      font-weight: 900;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    /* Toggle Switches */
+    .toggle-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toggle-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 1.5px solid #edf2f7;
+    }
+
+    .toggle-label {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #334155;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #cbd5e1;
+      transition: .3s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    input:checked + .slider {
+      background-color: #05c46b;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    /* Preset Quick Buttons */
+    .btn-preset {
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: 10px;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      color: #334155;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+
+    .btn-preset:hover {
+      border-color: #3b82f6;
+      background: #eff6ff;
+      color: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    /* Size Unit Chips */
+    .unit-chip {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .unit-chip:hover {
+      border-color: #3b82f6;
+      color: #1d4ed8;
+      background: #eff6ff;
+    }
+
+    .unit-chip.active {
+      border-color: #2563eb;
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    /* Simulation Buttons (Vivid Candy Bar) */
+    .sim-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .sim-btn {
+      padding: 10px 6px;
+      border-radius: 12px;
+      border: none;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 900;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+    }
+
+    .sim-btn:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+    }
+
+    .sim-btn.btn-green { background: linear-gradient(135deg, #05c46b, #009444); }
+    .sim-btn.btn-yellow { background: linear-gradient(135deg, #ffb800, #f39c12); color: #663900; }
+    .sim-btn.btn-orange { background: linear-gradient(135deg, #ff793f, #e55039); }
+    .sim-btn.btn-red { background: linear-gradient(135deg, #ff4d4d, #c41818); }
+    .sim-btn.btn-purple { background: linear-gradient(135deg, #be2edd, #881b9a); }
+    .sim-btn.btn-maroon { background: linear-gradient(135deg, #8c0c32, #59041b); }
+
+    .sim-reset-btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 10px;
+      background: #f1f5f9;
+      border: 1.5px solid #cbd5e1;
+      font-family: inherit;
+      color: #334155;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .sim-reset-btn:hover {
+      background: #e2e8f0;
+    }
+
+    /* Right Column: Preview & Embed Code */
+    .preview-container {
+      background: #ffffff;
+      border-radius: 24px;
+      border: 2.5px solid #e2e8f0;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .preview-header {
+      padding: 16px 22px;
+      background: linear-gradient(90deg, #f8fafc 0%, #edf2f7 100%);
+      border-bottom: 2px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .preview-title {
+      font-size: 16px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .preview-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #334155;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .preview-stage {
+      background: #f8fafc;
+      padding: 32px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 520px;
+      background-image: 
+        radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+      background-size: 20px 20px;
+      overflow-x: auto;
+    }
+
+    .preview-frame-wrapper {
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    #previewIframe {
+      border: none;
+      border-radius: 24px;
+      box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.15);
+      background: #ffffff;
+      transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Embed Code Box */
+    .code-box-panel {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 2px solid #e2e8f0;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.04);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .code-tabs {
+      display: flex;
+      border-bottom: 2px solid #e2e8f0;
+      background: #f8fafc;
+    }
+
+    .code-tab {
+      padding: 12px 22px;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .code-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      background: #ffffff;
+    }
+
+    .code-content {
+      padding: 20px;
+    }
+
+    .code-textarea {
+      width: 100%;
+      height: 95px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      font-weight: 600;
+      background: #0f172a;
+      color: #38bdf8;
+      border: 2px solid #1e293b;
+      border-radius: 12px;
+      padding: 14px;
+      resize: none;
+      outline: none;
+      line-height: 1.5;
+    }
+
+    .code-action-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 14px;
+    }
+
+    .btn-copy {
+      padding: 12px 26px;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 14.5px;
+      font-weight: 900;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .btn-copy:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.45);
+    }
+
+    /* Integration Guide Section */
+    .guide-section {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 2px solid #e2e8f0;
+      padding: 24px;
+      margin-bottom: 30px;
+    }
+
+    .guide-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: #0f172a;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .guide-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .guide-step-card {
+      background: #f8fafc;
+      border: 2px solid #edf2f7;
+      border-radius: 14px;
+      padding: 16px;
+      transition: transform 0.2s;
+    }
+
+    .guide-step-card:hover {
+      transform: translateY(-2px);
+      border-color: #cbd5e1;
+    }
+
+    .step-badge {
+      display: inline-block;
+      font-size: 11.5px;
+      font-weight: 900;
+      color: #1e40af;
+      background: #dbeafe;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    .guide-step-title {
+      font-size: 14.5px;
+      font-weight: 900;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .guide-step-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: #475569;
+      line-height: 1.5;
+    }
+
+    /* Toast Notification (Cute & Playful) */
+    .cute-toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 24px;
+      border-radius: 16px;
+      font-size: 14px;
+      font-weight: 800;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      transform: translateY(120px) scale(0.9);
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .cute-toast.show {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    .toast-emoji {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <div class="brand">
+        <div class="brand-icon">🚩</div>
+        <div>
+          <div class="brand-title">
+            <span>校園空氣品質監測與空汙旗幟產生器</span>
+            <span style="font-size: 16px;">✨</span>
+          </div>
+          <div class="brand-subtitle">臺灣教育部校園空品旗幟標準 × 環境部即時監測網</div>
+        </div>
+      </div>
+      <div class="header-badges">
+        <span class="status-badge">
+          <span class="status-dot"></span>
+          環境部即時連線中
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Header -->
+  <section class="hero-banner">
+    <div class="hero-inner">
+      <span class="hero-tag">🏫 學校網站專用 · 超可愛即時看版</span>
+      <h1 class="hero-heading">一鍵產生專屬<span>校園空品旗幟小工具</span></h1>
+      <p class="hero-desc">
+        預設支援<strong>臺中市沙鹿區</strong>（沙鹿測站）及全臺灣所有監測站！內建超萌<strong>「空品小雲寶」</strong>吉祥物與生動語音泡泡，即時顯示升旗顏色、室外體育課判定與敏感學生照護指南，直接複製語法就能嵌入學校首頁！
+      </p>
+    </div>
+  </section>
+
+  <!-- Main Layout -->
+  <main class="app-layout">
+    
+    <!-- Left Column: Controls -->
+    <div class="config-column">
+      
+      <!-- Panel 1: Station Setting -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <span class="panel-title">
+            <span class="step-number">1</span>
+            選擇學校所在區域與測站
+          </span>
+          <span style="font-size: 12px; font-weight: 700; color: #3b82f6;">全臺 22 縣市</span>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <div class="select-row">
+              <div>
+                <label class="form-label" for="selectCounty">縣市</label>
+                <select class="form-select" id="selectCounty"></select>
+              </div>
+              <div>
+                <label class="form-label" for="selectStation">空氣品質測站</label>
+                <select class="form-select" id="selectStation"></select>
+              </div>
+            </div>
+            
+            <!-- Quick Chips for common Taichung stations -->
+            <div class="quick-chips">
+              <span style="font-size: 12px; color: var(--text-muted); align-self: center; font-weight: 700;">常用測站：</span>
+              <button type="button" class="chip-btn active-chip" id="chipShalu" onclick="selectQuickStation('臺中市', '26')">⭐ 臺中沙鹿 (預設)</button>
+              <button type="button" class="chip-btn" onclick="selectQuickStation('臺中市', '25')">臺中西屯</button>
+              <button type="button" class="chip-btn" onclick="selectQuickStation('臺中市', '28')">臺中忠明</button>
+              <button type="button" class="chip-btn" onclick="selectQuickStation('臺中市', '7')">臺中大里</button>
+              <button type="button" class="chip-btn" onclick="selectQuickStation('臺中市', '74')">臺中豐原</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2: Theme & Size Selection -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <span class="panel-title">
+            <span class="step-number">2</span>
+            挑選小工具版面樣式
+          </span>
+          <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">4 種版型</span>
+        </div>
+        <div class="panel-body">
+          <div class="theme-grid">
+            
+            <!-- Standard Card -->
+            <div class="theme-card active" data-theme="card" data-w="390" data-h="330">
+              <div class="theme-card-title">
+                <span>📌 標準卡片版</span>
+                <span class="theme-pill-tag">最推薦</span>
+              </div>
+              <div class="theme-card-desc">顯示空品旗幟、室外課判定與活動指引 (390×330)</div>
+            </div>
+
+            <!-- Compact Sidebar -->
+            <div class="theme-card" data-theme="compact" data-w="330" data-h="270">
+              <div class="theme-card-title">
+                <span>📱 緊湊精簡版</span>
+              </div>
+              <div class="theme-card-desc">適合學校官網兩側狹窄欄位或手機螢幕 (330×270)</div>
+            </div>
+
+            <!-- Horizontal Banner -->
+            <div class="theme-card" data-theme="banner" data-w="100%" data-h="135">
+              <div class="theme-card-title">
+                <span>📏 橫幅橫排版</span>
+              </div>
+              <div class="theme-card-desc">適合置頂跑馬區或首頁頂部通告橫條 (寬度100%)</div>
+            </div>
+
+            <!-- Mini Badge -->
+            <div class="theme-card" data-theme="badge" data-w="290" data-h="78">
+              <div class="theme-card-title">
+                <span>🏷️ 迷你微型徽章</span>
+              </div>
+              <div class="theme-card-desc">極簡尺寸，只顯示旗幟圖樣與室外課判定 (290×78)</div>
+            </div>
+
+          </div>
+
+          <!-- Size Overrides -->
+          <div style="margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label class="form-label" for="inputWidth" style="margin-bottom: 0;">內嵌寬度 (Width)</label>
+                <span style="font-size: 11px; color: #2563eb; font-weight: 700;">支援百分比 % 或 px</span>
+              </div>
+              <!-- Width Quick Chips (Percent & Pixels) -->
+              <div class="width-chip-group" style="display: flex; gap: 5px; margin-bottom: 8px; flex-wrap: wrap;">
+                <button type="button" class="unit-chip" id="chipW100" onclick="setWidthPreset('100%')">100% (滿版)</button>
+                <button type="button" class="unit-chip" id="chipW75" onclick="setWidthPreset('75%')">75%</button>
+                <button type="button" class="unit-chip" id="chipW50" onclick="setWidthPreset('50%')">50%</button>
+                <button type="button" class="unit-chip active" id="chipW390" onclick="setWidthPreset('390')">390px</button>
+                <button type="button" class="unit-chip" id="chipW330" onclick="setWidthPreset('330')">330px</button>
+              </div>
+              <input type="text" class="form-input" id="inputWidth" value="390" placeholder="例如：100% 或 390">
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label class="form-label" for="inputHeight" style="margin-bottom: 0;">內嵌高度 (Height)</label>
+                <span style="font-size: 11px; color: #10b981; font-weight: 700;">🔒 維持您所輸入的數值</span>
+              </div>
+              <!-- Height Helper Chips -->
+              <div style="display: flex; gap: 5px; margin-bottom: 8px; flex-wrap: wrap;">
+                <button type="button" class="unit-chip" onclick="setHeightPreset('330')">330px</button>
+                <button type="button" class="unit-chip" onclick="setHeightPreset('350')">350px</button>
+                <button type="button" class="unit-chip" onclick="setHeightPreset('430')">430px</button>
+                <button type="button" class="unit-chip" onclick="setHeightPreset('270')">270px</button>
+              </div>
+              <input type="text" class="form-input" id="inputHeight" value="330" placeholder="例如：330">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3: Display Options -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <span class="panel-title">
+            <span class="step-number">3</span>
+            自訂顯示模組（自由勾選呈現項目）
+          </span>
+          <span style="font-size: 12px; font-weight: 700; color: #64748b;">自由選配</span>
+        </div>
+        <div class="panel-body">
+          <p style="font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 12px;">
+            每一塊資訊皆可自由選擇要或不要，右側即時預覽變化：
+          </p>
+
+          <!-- Quick Presets -->
+          <div style="display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;">
+            <button type="button" class="btn-preset" onclick="applyPreset('standard')">
+              🏃‍♂️ 體育課標準版 (推薦)
+            </button>
+            <button type="button" class="btn-preset" onclick="applyPreset('full')" style="border-color: #93c5fd; background: #eff6ff; color: #1d4ed8;">
+              🌟 完整數據版 (含各項空汙數值)
+            </button>
+            <button type="button" class="btn-preset" onclick="applyPreset('flagOnly')">
+              🚩 極簡旗幟版
+            </button>
+          </div>
+
+          <div class="toggle-list">
+            <!-- 1. Station Dropdown -->
+            <div class="toggle-item">
+              <div>
+                <span class="toggle-label">📍 測站選擇下拉選單</span>
+                <div style="font-size: 11.5px; color: #64748b; font-weight: 600; margin-top: 2px;">
+                  可直接下拉切換全台 22 縣市 84 測站即時資訊
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="chkStation" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <!-- 2. Flag & AQI -->
+            <div class="toggle-item">
+              <div>
+                <span class="toggle-label">🚩 校園空品旗幟與 AQI 數值</span>
+                <div style="font-size: 11.5px; color: #64748b; font-weight: 600; margin-top: 2px;">
+                  教育部標準六色飄揚動態旗、旗色等級與即時 AQI 指標
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="chkFlag" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <!-- Weather Icon -->
+            <div class="toggle-item">
+              <div>
+                <span class="toggle-label">🌤️ 旗幟旁天氣圖示（太陽、多雲、下雨、雷雨等）</span>
+                <div style="font-size: 11.5px; color: #64748b; font-weight: 600; margin-top: 2px;">
+                  依測站當地即時氣候呈現太陽、多雲、下雨或雷雨動態圖樣與溫度
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="chkWeather" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+
+
+            <!-- 4. Outdoor PE Decision Super Badge -->
+            <div class="toggle-item">
+              <div>
+                <span class="toggle-label">🏃‍♂️ 校園室外課判定大徽章</span>
+                <div style="font-size: 11.5px; color: #64748b; font-weight: 600; margin-top: 2px;">
+                  以搶眼大徽章告知師生【可以正常上室外課】或【改室內課】
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="chkDecision" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <!-- 5. Activity Advice Card -->
+            <div class="toggle-item">
+              <div>
+                <span class="toggle-label">⚽ 體育課與大下課活動指引卡</span>
+                <div style="font-size: 11.5px; color: #64748b; font-weight: 600; margin-top: 2px;">
+                  室外體育課跑步運動調適、防曬與補充水分之校園指引
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="chkActivity" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <!-- 6. Sensitive Student Care Card -->
+            <div class="toggle-item">
+              <div>
+                <span class="toggle-label">🧸 過敏與敏感學童照護卡</span>
+                <div style="font-size: 11.5px; color: #64748b; font-weight: 600; margin-top: 2px;">
+                  氣喘、呼吸道或過敏體質學生特別照護與防護提醒
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="chkSensitive" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <!-- 7. Detailed Pollutant Metrics -->
+            <div class="toggle-item" style="border: 2px solid #93c5fd; background: #f0f7ff;">
+              <div>
+                <span class="toggle-label" style="color: #1d4ed8;">📊 各項空污指標數據方塊</span>
+                <div style="font-size: 11.5px; color: #2563eb; font-weight: 600; margin-top: 2px;">
+                  呈現 PM2.5、PM10、臭氧 O₃ 與 AQI 即時數據方塊
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="chkMetrics">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <!-- 8. Auto Refresh Cycle -->
+            <div class="toggle-item">
+              <span class="toggle-label">🔄 自動重新整理週期</span>
+              <select class="form-select" id="selectRefresh" style="width: 140px; padding: 4px 8px; font-size: 13px;">
+                <option value="300">每 5 分鐘</option>
+                <option value="600" selected>每 10 分鐘</option>
+                <option value="1800">每 30 分鐘</option>
+                <option value="3600">每 1 小時</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 4: Simulation Tester -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <span class="panel-title">
+            <span class="step-number">4</span>
+            旗幟與室外課模擬演練
+          </span>
+          <span style="font-size: 12px; font-weight: 700; color: #ea580c;">校園演練專用</span>
+        </div>
+        <div class="panel-body">
+          <p style="font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 10px;">
+            點選下方按鈕，小雲寶會即時變換生動表情與室外體育課警示語：
+          </p>
+          <div class="sim-bar">
+            <button type="button" class="sim-btn btn-green" onclick="setSimulation(35)">
+              <span>🟢 綠色旗 (35)</span>
+              <span style="font-size: 11px; opacity: 0.9;">開心跑跳 ⚽</span>
+            </button>
+            <button type="button" class="sim-btn btn-yellow" onclick="setSimulation(65)">
+              <span>🟡 黃色旗 (65)</span>
+              <span style="font-size: 11px; opacity: 0.9;">記得喝水 🥤</span>
+            </button>
+            <button type="button" class="sim-btn btn-orange" onclick="setSimulation(125)">
+              <span>🟠 橘色旗 (125)</span>
+              <span style="font-size: 11px; opacity: 0.9;">減量戴口罩 😷</span>
+            </button>
+            <button type="button" class="sim-btn btn-red" onclick="setSimulation(165)">
+              <span>🔴 紅色旗 (165)</span>
+              <span style="font-size: 11px; opacity: 0.9;">改室內課 🚫</span>
+            </button>
+            <button type="button" class="sim-btn btn-purple" onclick="setSimulation(235)">
+              <span>🟣 紫色旗 (235)</span>
+              <span style="font-size: 11px; opacity: 0.9;">停止戶外 🛑</span>
+            </button>
+            <button type="button" class="sim-btn btn-maroon" onclick="setSimulation(350)">
+              <span>🟤 褐紅旗 (350)</span>
+              <span style="font-size: 11px; opacity: 0.9;">危害避難 🚨</span>
+            </button>
+          </div>
+          <button type="button" class="sim-reset-btn" id="btnResetSim" onclick="clearSimulation()">
+            🔄 還原為環境部即時真實數據 (即時監測模式)
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Live Preview & Code Generator -->
+    <div class="preview-column">
+      
+      <!-- Live Preview Container -->
+      <div class="preview-container">
+        <div class="preview-header">
+          <span class="preview-title">
+            <span>✨ 小工具即時動態預覽</span>
+            <span style="font-size: 13px; font-weight: 700; color: #3b82f6;" id="txtPreviewStation">臺中市沙鹿測站</span>
+          </span>
+          <div class="preview-actions">
+            <a href="widget.html?site=26" target="_blank" class="action-btn" id="btnOpenNewTab">
+              <span>🚀</span>
+              <span>獨立新分頁打開</span>
+            </a>
+            <button class="action-btn" onclick="reloadPreview()" type="button">
+              <span>🔄</span>
+              <span>重整</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="preview-stage">
+          <div class="preview-frame-wrapper" id="frameWrapper">
+            <iframe id="previewIframe" src="widget.html?site=26" width="390" height="330" scrolling="no"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Embed Code Output Panel -->
+      <div class="code-box-panel">
+        <div class="code-tabs">
+          <div class="code-tab active" onclick="switchCodeTab('iframe')">
+            <span>💻</span>
+            <span>標準 iframe 嵌入語法 (最推薦)</span>
+          </div>
+          <div class="code-tab" onclick="switchCodeTab('rwd')">
+            <span>📱</span>
+            <span>自適應 RWD 容器碼</span>
+          </div>
+          <div class="code-tab" onclick="switchCodeTab('url')">
+            <span>🔗</span>
+            <span>獨立小工具網址</span>
+          </div>
+        </div>
+
+        <div class="code-content">
+          <textarea class="code-textarea" id="txtEmbedCode" readonly></textarea>
+          <div class="code-action-row">
+            <div style="font-size: 12.5px; font-weight: 700; color: var(--text-muted);">
+              相容：Google Sites 協作平台、XOOPS 校園網站、WordPress、各縣市教育局入口網
+            </div>
+            <button class="btn-copy" id="btnCopyCode" onclick="copyEmbedCode()">
+              <span>✨</span>
+              <span>一鍵複製語法</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Integration Guide Card -->
+      <div class="guide-section">
+        <div class="guide-title">
+          <span>🎒 學校網站 3 步驟輕鬆嵌入指南</span>
+        </div>
+        <div class="guide-steps">
+          <div class="guide-step-card">
+            <span class="step-badge">第 1 步</span>
+            <div class="guide-step-title">複製上方產生的嵌入語法</div>
+            <div class="guide-step-text">
+              選定貴校測站（預設已為沙鹿站）與合適的版型，點擊「一鍵複製語法」。
+            </div>
+          </div>
+          <div class="guide-step-card">
+            <span class="step-badge">第 2 步</span>
+            <div class="guide-step-title">登入學校網頁後台</div>
+            <div class="guide-step-text">
+              進入學校官網、體育組、學務處或健康中心後台，在首頁或側欄新增「自訂 HTML / 嵌入」區塊。
+            </div>
+          </div>
+          <div class="guide-step-card">
+            <span class="step-badge">第 3 步</span>
+            <div class="guide-step-title">貼上語法並發布</div>
+            <div class="guide-step-text">
+              貼上語法並儲存。小工具每 10 分鐘會全自動向環境部同步，即時升掛對應空品旗幟！
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Cute Toast Notification -->
+  <div class="cute-toast" id="toastNotice">
+    <span class="toast-emoji">🎉</span>
+    <span id="toastMsg">已成功複製內嵌語法！快貼到學校網頁吧～</span>
+  </div>
+
+  <script>
+    // State
+    let currentCounty = '臺中市';
+    let currentStationId = '26'; // Shalu default
+    let currentStationName = '沙鹿';
+    let currentTheme = 'card';
+    let currentWidth = '390';
+    let currentHeight = '330';
+    let currentSimAqi = null;
+    let currentActiveCodeTab = 'iframe';
+    let stationsData = [];
+
+    // Elements
+    const selectCounty = document.getElementById('selectCounty');
+    const selectStation = document.getElementById('selectStation');
+    const inputWidth = document.getElementById('inputWidth');
+    const inputHeight = document.getElementById('inputHeight');
+    const chkStation = document.getElementById('chkStation');
+    const chkFlag = document.getElementById('chkFlag');
+    const chkWeather = document.getElementById('chkWeather');
+    const chkDecision = document.getElementById('chkDecision');
+    const chkActivity = document.getElementById('chkActivity');
+    const chkSensitive = document.getElementById('chkSensitive');
+    const chkMetrics = document.getElementById('chkMetrics');
+    const selectRefresh = document.getElementById('selectRefresh');
+    const previewIframe = document.getElementById('previewIframe');
+    const txtEmbedCode = document.getElementById('txtEmbedCode');
+    const btnOpenNewTab = document.getElementById('btnOpenNewTab');
+    const txtPreviewStation = document.getElementById('txtPreviewStation');
+
+    // Fetch stations list from API or static JSON
+    async function initStations() {
+      try {
+        const res = await fetch('/api/stations');
+        if (!res.ok) throw new Error('API not available');
+        const data = await res.json();
+        stationsData = data.counties || [];
+        populateCounties();
+      } catch (e) {
+        try {
+          const staticRes = await fetch('./data/stations.json');
+          if (staticRes.ok) {
+            const data = await staticRes.json();
+            stationsData = data.counties || [];
+            populateCounties();
+            return;
+          }
+        } catch (staticErr) {}
+
+        console.warn('Using embedded station map fallback', e);
+        stationsData = [{
+          countyName: '臺中市',
+          stations: [
+            { id: '26', name: '沙鹿' },
+            { id: '25', name: '西屯' },
+            { id: '28', name: '忠明' },
+            { id: '7', name: '大里' },
+            { id: '74', name: '豐原' }
+          ]
+        }];
+        populateCounties();
+      }
+    }
+
+    function populateCounties() {
+      selectCounty.innerHTML = '';
+      stationsData.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.countyName;
+        opt.textContent = c.countyName;
+        if (c.countyName === '臺中市') opt.selected = true;
+        selectCounty.appendChild(opt);
+      });
+
+      updateStationDropdown('臺中市', '26');
+    }
+
+    function updateStationDropdown(countyName, defaultSiteId = null) {
+      selectStation.innerHTML = '';
+      const countyObj = stationsData.find(c => c.countyName === countyName);
+      if (!countyObj || !countyObj.stations) return;
+
+      countyObj.stations.forEach(st => {
+        const opt = document.createElement('option');
+        opt.value = st.id;
+        opt.textContent = `${st.name} (ID: ${st.id})`;
+        if (defaultSiteId && st.id === defaultSiteId) {
+          opt.selected = true;
+          currentStationId = st.id;
+          currentStationName = st.name;
+        }
+        selectStation.appendChild(opt);
+      });
+
+      if (!defaultSiteId && countyObj.stations.length > 0) {
+        currentStationId = countyObj.stations[0].id;
+        currentStationName = countyObj.stations[0].name;
+      }
+
+      updateAll();
+    }
+
+    function selectQuickStation(county, siteId) {
+      currentCounty = county;
+      selectCounty.value = county;
+      updateStationDropdown(county, siteId);
+      
+      document.querySelectorAll('.chip-btn').forEach(btn => btn.classList.remove('active-chip'));
+      if (siteId === '26') {
+        const shaluBtn = document.getElementById('chipShalu');
+        if (shaluBtn) shaluBtn.classList.add('active-chip');
+      }
+    }
+
+    // Event Listeners
+    selectCounty.addEventListener('change', (e) => {
+      currentCounty = e.target.value;
+      updateStationDropdown(currentCounty);
+    });
+
+    selectStation.addEventListener('change', (e) => {
+      currentStationId = e.target.value;
+      const opt = selectStation.options[selectStation.selectedIndex];
+      currentStationName = opt ? opt.textContent.split(' ')[0] : '沙鹿';
+      updateAll();
+    });
+
+    inputWidth.addEventListener('input', (e) => {
+      currentWidth = e.target.value.trim() || '390';
+      updateUnitChips(currentWidth);
+      updateAll();
+    });
+
+    inputHeight.addEventListener('input', (e) => {
+      currentHeight = e.target.value.trim() || '330';
+      updateAll();
+    });
+
+    // Width preset buttons (percentage and px)
+    function setWidthPreset(val) {
+      inputWidth.value = val;
+      currentWidth = val;
+      updateUnitChips(val);
+      updateAll();
+    }
+
+    function updateUnitChips(val) {
+      document.querySelectorAll('.width-chip-group .unit-chip').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent.includes(val)) {
+          btn.classList.add('active');
+        }
+      });
+    }
+
+    // Height helper buttons
+    function setHeightPreset(val) {
+      inputHeight.value = val;
+      currentHeight = val;
+      updateAll();
+    }
+
+    // Toggle listeners - MAINTAIN USER HEIGHT (DO NOT JUMP!)
+    const allToggles = [chkStation, chkFlag, chkWeather, chkDecision, chkActivity, chkSensitive, chkMetrics];
+    allToggles.forEach(chk => {
+      if (chk) {
+        chk.addEventListener('change', () => {
+          // Maintain user's input height exactly as is
+          currentHeight = inputHeight.value.trim() || '330';
+          updateAll();
+        });
+      }
+    });
+    selectRefresh.addEventListener('change', updateAll);
+
+    // Quick Presets
+    function applyPreset(preset) {
+      if (preset === 'full') {
+        chkStation.checked = true;
+        chkFlag.checked = true;
+        chkWeather.checked = true;
+        chkDecision.checked = true;
+        chkActivity.checked = true;
+        chkSensitive.checked = true;
+        chkMetrics.checked = true;
+        showToast('🌟 已套用【完整數據版】：開啟各項空汙指標數值');
+      } else if (preset === 'flagOnly') {
+        chkStation.checked = false;
+        chkFlag.checked = true;
+        chkWeather.checked = true;
+        chkDecision.checked = false;
+        chkActivity.checked = false;
+        chkSensitive.checked = false;
+        chkMetrics.checked = false;
+        showToast('🚩 已套用【極簡旗幟版】：僅保留核心旗幟與 AQI');
+      } else {
+        // standard (default)
+        chkStation.checked = true;
+        chkFlag.checked = true;
+        chkWeather.checked = true;
+        chkDecision.checked = true;
+        chkActivity.checked = true;
+        chkSensitive.checked = true;
+        chkMetrics.checked = false;
+        showToast('🏃‍♂️ 已套用【體育課標準版】：適合校園首頁');
+      }
+      // Maintain user's input height
+      currentHeight = inputHeight.value.trim() || '330';
+      updateAll();
+    }
+
+    // Theme Card Selection
+    document.querySelectorAll('.theme-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        currentTheme = card.getAttribute('data-theme');
+        currentWidth = card.getAttribute('data-w');
+        currentHeight = card.getAttribute('data-h');
+        inputWidth.value = currentWidth;
+        inputHeight.value = currentHeight;
+        updateUnitChips(currentWidth);
+        updateAll();
+      });
+    });
+
+    // Simulation
+    function setSimulation(aqi) {
+      currentSimAqi = aqi;
+      updateAll();
+      showToast(`已切換為【模擬演練模式】：AQI ${aqi}`);
+    }
+
+    function clearSimulation() {
+      currentSimAqi = null;
+      updateAll();
+      showToast(`已還原為【即時監測模式】`);
+    }
+
+    // Build URL
+    function buildWidgetUrl() {
+      let origin = window.location.origin;
+      if (!origin || origin === 'null') {
+        origin = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+      }
+      const params = new URLSearchParams();
+      params.set('site', currentStationId);
+      if (currentTheme !== 'card') params.set('theme', currentTheme);
+
+      // Modular switches
+      if (!chkStation.checked) params.set('show_station', '0');
+      if (!chkFlag.checked) params.set('show_flag', '0');
+      if (!chkWeather.checked) params.set('show_weather', '0');
+      if (!chkDecision.checked) params.set('show_decision', '0');
+      if (!chkActivity.checked) params.set('show_activity', '0');
+      if (!chkSensitive.checked) params.set('show_sensitive', '0');
+      if (chkMetrics.checked) params.set('show_metrics', '1');
+      
+      if (selectRefresh.value !== '600') params.set('refresh', selectRefresh.value);
+      if (currentSimAqi !== null) params.set('sim_aqi', currentSimAqi);
+
+      const base = origin ? `${origin}/widget.html` : 'widget.html';
+      return `${base}?${params.toString()}`;
+    }
+
+    // Update Iframe & Code
+    function updateAll() {
+      const widgetUrl = buildWidgetUrl();
+      currentWidth = inputWidth.value.trim() || '390';
+      currentHeight = inputHeight.value.trim() || '330';
+
+      let wVal = currentWidth;
+      if (!wVal.endsWith('%') && !wVal.endsWith('px')) {
+        wVal = `${wVal}px`;
+      }
+      let hVal = currentHeight;
+      if (!hVal.endsWith('%') && !hVal.endsWith('px')) {
+        hVal = `${hVal}px`;
+      }
+
+      previewIframe.style.width = wVal;
+      previewIframe.style.height = hVal;
+      
+      if (previewIframe.contentWindow && previewIframe.contentWindow.location) {
+        try {
+          previewIframe.contentWindow.location.replace(widgetUrl);
+        } catch(e) {
+          previewIframe.src = widgetUrl;
+        }
+      } else {
+        previewIframe.src = widgetUrl;
+      }
+
+      txtPreviewStation.textContent = `${currentCounty} ${currentStationName}測站 (ID: ${currentStationId})`;
+      btnOpenNewTab.href = widgetUrl;
+
+      generateEmbedCode(widgetUrl);
+    }
+
+    function reloadPreview() {
+      previewIframe.src = buildWidgetUrl();
+    }
+
+    function switchCodeTab(tab) {
+      currentActiveCodeTab = tab;
+      document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+      const activeEl = Array.from(document.querySelectorAll('.code-tab')).find(el => {
+        if (tab === 'iframe' && el.textContent.includes('iframe')) return true;
+        if (tab === 'rwd' && el.textContent.includes('RWD')) return true;
+        if (tab === 'url' && el.textContent.includes('網址')) return true;
+        return false;
+      });
+      if (activeEl) activeEl.classList.add('active');
+      generateEmbedCode(buildWidgetUrl());
+    }
+
+    function generateEmbedCode(url) {
+      let w = currentWidth;
+      if (!w.endsWith('%') && !w.endsWith('px')) w = `${w}px`;
+      let h = currentHeight;
+      if (!h.endsWith('%') && !h.endsWith('px')) h = `${h}px`;
+
+      if (currentActiveCodeTab === 'iframe') {
+        txtEmbedCode.value = `<iframe src="${url}" width="${w}" height="${h}" frameborder="0" scrolling="no" style="border:none; overflow:hidden; border-radius:20px; max-width:100%;" title="校園空氣品質旗幟與室外課監測"></iframe>`;
+      } else if (currentActiveCodeTab === 'rwd') {
+        txtEmbedCode.value = `<div style="position:relative; width:${w}; max-width:100%; height:${h}; margin: 0 auto; overflow:hidden; border-radius:20px;">\n  <iframe src="${url}" style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;" scrolling="no" title="校園空氣品質旗幟與室外課監測"></iframe>\n</div>`;
+      } else {
+        txtEmbedCode.value = url;
+      }
+    }
+
+    async function copyEmbedCode() {
+      try {
+        await navigator.clipboard.writeText(txtEmbedCode.value);
+        showToast('✓ 內嵌語法已複製到剪貼簿囉！');
+      } catch (err) {
+        txtEmbedCode.select();
+        document.execCommand('copy');
+        showToast('✓ 內嵌語法已複製！');
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotice');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+    initStations();
+  </script>
+</body>
+</html>
