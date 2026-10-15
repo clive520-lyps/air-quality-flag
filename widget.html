@@ -1449,66 +1449,77 @@
       if (btnRefresh) btnRefresh.classList.add('spinning');
       if (cuteApp) cuteApp.classList.add('loading-shimmer');
 
-      let apiUrl = `/api/air-quality?site=${encodeURIComponent(currentSiteId)}`;
-      if (simAqiParam) {
-        apiUrl += `&sim_aqi=${encodeURIComponent(simAqiParam)}`;
+      const isStaticEnv = window.location.hostname.endsWith('github.io') || window.location.protocol === 'file:';
+
+      async function tryLoadFromStatic() {
+        const staticUrl = new URL('data/air-quality.json', window.location.href).href;
+        const staticRes = await fetch(staticUrl);
+        if (!staticRes.ok) throw new Error(`HTTP ${staticRes.status}`);
+        const staticPayload = await staticRes.json();
+        const stationData = staticPayload.stations && staticPayload.stations[currentSiteId]
+          ? JSON.parse(JSON.stringify(staticPayload.stations[currentSiteId]))
+          : JSON.parse(JSON.stringify(Object.values(staticPayload.stations || {})[0]));
+        if (!stationData) throw new Error('No station data in static payload');
+        if (simAqiParam) {
+          const aqiNum = parseInt(simAqiParam, 10);
+          stationData.aqi = String(aqiNum);
+          stationData.pm25 = String(Math.round(aqiNum * 0.35));
+          stationData.pm10 = String(Math.round(aqiNum * 0.7));
+          stationData.o3 = String(Math.round(aqiNum * 0.8));
+          stationData.flag = calculateClientFlagAdvice(aqiNum);
+        }
+        renderWidgetData(stationData);
       }
 
-      try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const data = await response.json();
-        renderWidgetData(data);
-      } catch (err) {
-        console.warn('API error, trying static data fallback:', err);
+      // If running on GitHub Pages or file:// protocol, directly load static json cleanly
+      if (isStaticEnv) {
         try {
-          const staticRes = await fetch('./data/air-quality.json');
-          if (staticRes.ok) {
-            const staticPayload = await staticRes.json();
-            const stationData = staticPayload.stations && staticPayload.stations[currentSiteId]
-              ? JSON.parse(JSON.stringify(staticPayload.stations[currentSiteId]))
-              : JSON.parse(JSON.stringify(Object.values(staticPayload.stations || {})[0]));
-            if (stationData) {
-              if (simAqiParam) {
-                const aqiNum = parseInt(simAqiParam, 10);
-                stationData.aqi = String(aqiNum);
-                stationData.pm25 = String(Math.round(aqiNum * 0.35));
-                stationData.pm10 = String(Math.round(aqiNum * 0.7));
-                stationData.o3 = String(Math.round(aqiNum * 0.8));
-                stationData.flag = calculateClientFlagAdvice(aqiNum);
-              }
-              renderWidgetData(stationData);
-              return;
-            }
-          }
+          await tryLoadFromStatic();
+          return;
         } catch (staticErr) {
-          console.warn('Static data fallback failed:', staticErr);
+          console.warn('Static data load error:', staticErr);
         }
-
-        renderWidgetData({
-          sitename: '沙鹿',
-          county: '臺中市',
-          date: '13:00',
-          aqi: '65',
-          pm25: '15',
-          pm10: '44',
-          o3: '76',
-          pollutant: '細懸浮微粒 (PM2.5)',
-          flag: {
-            aqi: 65,
-            flagName: '黃色旗',
-            flagClass: 'yellow',
-            level: '普通',
-            outdoorBadge: '可以正常上室外課',
-            activityAdvice: '適合正常進行戶外活動。室外體育課照常進行，提醒學生運動後多補充水分！',
-            sensitiveAdvice: '氣喘或過敏體質同學仍可正常活動，請留意自身呼吸狀況。'
+      } else {
+        // Local Node.js server mode
+        try {
+          let apiUrl = `/api/air-quality?site=${encodeURIComponent(currentSiteId)}`;
+          if (simAqiParam) {
+            apiUrl += `&sim_aqi=${encodeURIComponent(simAqiParam)}`;
           }
-        });
-      } finally {
-        if (btnRefresh) {
-          setTimeout(() => btnRefresh.classList.remove('spinning'), 500);
+          const response = await fetch(apiUrl);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = await response.json();
+          renderWidgetData(data);
+          return;
+        } catch (err) {
+          console.warn('API error, falling back to static:', err);
+          try {
+            await tryLoadFromStatic();
+            return;
+          } catch(e) {}
         }
       }
+
+      // Fallback data
+      renderWidgetData({
+        sitename: '沙鹿',
+        county: '臺中市',
+        date: '13:00',
+        aqi: '65',
+        pm25: '15',
+        pm10: '44',
+        o3: '76',
+        pollutant: '細懸浮微粒 (PM2.5)',
+        flag: {
+          aqi: 65,
+          flagName: '黃色旗',
+          flagClass: 'yellow',
+          level: '普通',
+          outdoorBadge: '可以正常上室外課',
+          activityAdvice: '適合正常進行戶外活動。室外體育課照常進行，提醒學生運動後多補充水分！',
+          sensitiveAdvice: '氣喘或過敏體質同學仍可正常活動，請留意自身呼吸狀況。'
+        }
+      });
     }
 
     // Refresh Countdown

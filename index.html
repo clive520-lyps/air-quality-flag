@@ -1314,36 +1314,52 @@
 
     // Fetch stations list from API or static JSON
     async function initStations() {
-      try {
-        const res = await fetch('/api/stations');
-        if (!res.ok) throw new Error('API not available');
-        const data = await res.json();
+      const isStaticEnv = window.location.hostname.endsWith('github.io') || window.location.protocol === 'file:';
+
+      async function tryLoadStaticStations() {
+        const staticUrl = new URL('data/stations.json', window.location.href).href;
+        const staticRes = await fetch(staticUrl);
+        if (!staticRes.ok) throw new Error(`HTTP ${staticRes.status}`);
+        const data = await staticRes.json();
         stationsData = data.counties || [];
         populateCounties();
-      } catch (e) {
-        try {
-          const staticRes = await fetch('./data/stations.json');
-          if (staticRes.ok) {
-            const data = await staticRes.json();
-            stationsData = data.counties || [];
-            populateCounties();
-            return;
-          }
-        } catch (staticErr) {}
-
-        console.warn('Using embedded station map fallback', e);
-        stationsData = [{
-          countyName: '臺中市',
-          stations: [
-            { id: '26', name: '沙鹿' },
-            { id: '25', name: '西屯' },
-            { id: '28', name: '忠明' },
-            { id: '7', name: '大里' },
-            { id: '74', name: '豐原' }
-          ]
-        }];
-        populateCounties();
       }
+
+      if (isStaticEnv) {
+        try {
+          await tryLoadStaticStations();
+          return;
+        } catch (e) {
+          console.warn('Static stations load failed:', e);
+        }
+      } else {
+        try {
+          const res = await fetch('/api/stations');
+          if (!res.ok) throw new Error('API not available');
+          const data = await res.json();
+          stationsData = data.counties || [];
+          populateCounties();
+          return;
+        } catch (e) {
+          try {
+            await tryLoadStaticStations();
+            return;
+          } catch(err) {}
+        }
+      }
+
+      console.warn('Using embedded station map fallback');
+      stationsData = [{
+        countyName: '臺中市',
+        stations: [
+          { id: '26', name: '沙鹿' },
+          { id: '25', name: '西屯' },
+          { id: '28', name: '忠明' },
+          { id: '7', name: '大里' },
+          { id: '74', name: '豐原' }
+        ]
+      }];
+      populateCounties();
     }
 
     function populateCounties() {
@@ -1523,10 +1539,6 @@
 
     // Build URL
     function buildWidgetUrl() {
-      let origin = window.location.origin;
-      if (!origin || origin === 'null') {
-        origin = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
-      }
       const params = new URLSearchParams();
       params.set('site', currentStationId);
       if (currentTheme !== 'card') params.set('theme', currentTheme);
@@ -1543,8 +1555,15 @@
       if (selectRefresh.value !== '600') params.set('refresh', selectRefresh.value);
       if (currentSimAqi !== null) params.set('sim_aqi', currentSimAqi);
 
-      const base = origin ? `${origin}/widget.html` : 'widget.html';
-      return `${base}?${params.toString()}`;
+      // Resolve widget.html preserving GitHub Pages subdirectory
+      let targetUrl;
+      try {
+        targetUrl = new URL('widget.html', window.location.href);
+      } catch(e) {
+        targetUrl = new URL('widget.html', 'http://localhost:3000/');
+      }
+      targetUrl.search = params.toString();
+      return targetUrl.href;
     }
 
     // Update Iframe & Code
