@@ -189,18 +189,34 @@
       line-height: 1.6;
     }
 
-    /* Main Grid Layout */
+    /* Main Grid Layout - 3-Column Split */
     .app-layout {
-      max-width: 1400px;
-      margin: 28px auto;
-      padding: 0 24px;
+      max-width: 1720px;
+      margin: 24px auto;
+      padding: 0 20px;
       display: grid;
-      grid-template-columns: 480px 1fr;
-      gap: 28px;
+      grid-template-columns: 320px 340px 1fr;
+      gap: 20px;
       align-items: start;
     }
 
+    @media (max-width: 1320px) {
+      .app-layout {
+        grid-template-columns: 290px 310px 1fr;
+        gap: 16px;
+      }
+    }
+
     @media (max-width: 1060px) {
+      .app-layout {
+        grid-template-columns: 1fr 1fr;
+      }
+      .preview-column {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 720px) {
       .app-layout {
         grid-template-columns: 1fr;
       }
@@ -501,7 +517,7 @@
     /* Simulation Buttons (Vivid Candy Bar) */
     .sim-bar {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 8px;
       margin-top: 8px;
     }
@@ -940,11 +956,11 @@
           </div>
 
           <!-- Size Overrides -->
-          <div style="margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 12px;">
             <div>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <label class="form-label" for="inputWidth" style="margin-bottom: 0;">內嵌寬度 (Width)</label>
-                <span style="font-size: 11px; color: #2563eb; font-weight: 700;">支援百分比 % 或 px</span>
+                <span style="font-size: 11px; color: #2563eb; font-weight: 700;">支援 % 或 px</span>
               </div>
               <!-- Width Quick Chips (Percent & Pixels) -->
               <div class="width-chip-group" style="display: flex; gap: 5px; margin-bottom: 8px; flex-wrap: wrap;">
@@ -959,7 +975,7 @@
             <div>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <label class="form-label" for="inputHeight" style="margin-bottom: 0;">內嵌高度 (Height)</label>
-                <span style="font-size: 11px; color: #10b981; font-weight: 700;">🔒 維持您所輸入的數值</span>
+                <span style="font-size: 11px; color: #10b981; font-weight: 700;">🔒 維持數值</span>
               </div>
               <!-- Height Helper Chips -->
               <div style="display: flex; gap: 5px; margin-bottom: 8px; flex-wrap: wrap;">
@@ -974,30 +990,80 @@
         </div>
       </div>
 
-      <!-- Panel 3: Display Options -->
+      <!-- Panel 4: Simulation Tester (移至左欄底部，方便隨時測試) -->
       <div class="panel-card">
         <div class="panel-header">
           <span class="panel-title">
-            <span class="step-number">3</span>
-            自訂顯示模組（自由勾選呈現項目）
+            <span class="step-number" style="background: linear-gradient(135deg, #f97316, #ea580c);">⚡</span>
+            旗幟與室外課模擬演練
           </span>
-          <span style="font-size: 12px; font-weight: 700; color: #64748b;">自由選配</span>
+          <span style="font-size: 11px; font-weight: 800; color: #ea580c; background: #fff7ed; padding: 2px 7px; border-radius: 999px;">演練專用</span>
         </div>
         <div class="panel-body">
-          <p style="font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 12px;">
-            每一塊資訊皆可自由選擇要或不要，右側即時預覽變化：
+          <p style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 10px;">
+            點選按鈕，右側預覽將即時模擬空品警示與建議：
+          </p>
+          <div class="sim-bar">
+            <button type="button" class="sim-btn btn-green" onclick="setSimulation(35)">
+              <span>🟢 綠色旗 (35)</span>
+              <span style="font-size: 11px; opacity: 0.9;">開心跑跳 ⚽</span>
+            </button>
+            <button type="button" class="sim-btn btn-yellow" onclick="setSimulation(65)">
+              <span>🟡 黃色旗 (65)</span>
+              <span style="font-size: 11px; opacity: 0.9;">記得喝水 🥤</span>
+            </button>
+            <button type="button" class="sim-btn btn-orange" onclick="setSimulation(125)">
+              <span>🟠 橘色旗 (125)</span>
+              <span style="font-size: 11px; opacity: 0.9;">減量戴口罩 😷</span>
+            </button>
+            <button type="button" class="sim-btn btn-red" onclick="setSimulation(165)">
+              <span>🔴 紅色旗 (165)</span>
+              <span style="font-size: 11px; opacity: 0.9;">改室內課 🚫</span>
+            </button>
+            <button type="button" class="sim-btn btn-purple" onclick="setSimulation(235)">
+              <span>🟣 紫色旗 (235)</span>
+              <span style="font-size: 11px; opacity: 0.9;">停止戶外 🛑</span>
+            </button>
+            <button type="button" class="sim-btn btn-maroon" onclick="setSimulation(350)">
+              <span>🟤 褐紅旗 (350)</span>
+              <span style="font-size: 11px; opacity: 0.9;">危害避難 🚨</span>
+            </button>
+          </div>
+          <button type="button" class="sim-reset-btn" id="btnResetSim" onclick="clearSimulation()">
+            🔄 還原為環境部即時真實數據
+          </button>
+        </div>
+      </div>
+
+    </div> <!-- end .config-column (左欄) -->
+
+    <!-- Middle Column: Custom Display Modules (中間欄：自訂顯示模組，佔比小，緊鄰右側預覽) -->
+    <div class="modules-column">
+      
+      <!-- Panel 3: Display Options -->
+      <div class="panel-card" style="border-color: #93c5fd; box-shadow: 0 8px 24px rgba(37, 99, 235, 0.08);">
+        <div class="panel-header" style="background: #eff6ff;">
+          <span class="panel-title">
+            <span class="step-number">3</span>
+            自訂顯示模組
+          </span>
+          <span style="font-size: 11px; font-weight: 800; color: #2563eb; background: #dbeafe; padding: 2px 8px; border-radius: 999px;">即時聯動</span>
+        </div>
+        <div class="panel-body">
+          <p style="font-size: 12.5px; font-weight: 600; color: #475569; margin-bottom: 12px;">
+            自由勾選呈現項目，右側即時聯動展示變化：
           </p>
 
           <!-- Quick Presets -->
-          <div style="display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;">
+          <div style="display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap;">
             <button type="button" class="btn-preset" onclick="applyPreset('standard')">
-              🏃‍♂️ 體育課標準版 (推薦)
+              🏃‍♂️ 標準版
             </button>
             <button type="button" class="btn-preset" onclick="applyPreset('full')" style="border-color: #93c5fd; background: #eff6ff; color: #1d4ed8;">
-              🌟 完整數據版 (含各項空汙數值)
+              🌟 完整版
             </button>
             <button type="button" class="btn-preset" onclick="applyPreset('flagOnly')">
-              🚩 極簡旗幟版
+              🚩 極簡旗
             </button>
           </div>
 
@@ -1033,9 +1099,9 @@
             <!-- Weather Icon -->
             <div class="toggle-item">
               <div>
-                <span class="toggle-label">🌤️ 旗幟旁天氣圖示（太陽、多雲、下雨、雷雨等）</span>
+                <span class="toggle-label">🌤️ 旗幟旁天氣圖示與氣溫</span>
                 <div style="font-size: 11.5px; color: #64748b; font-weight: 600; margin-top: 2px;">
-                  依測站當地即時氣候呈現太陽、多雲、下雨或雷雨動態圖樣與溫度
+                  依測站當地即時氣候呈現太陽、多雲、下雨或雷雨與溫度
                 </div>
               </div>
               <label class="switch">
@@ -1043,8 +1109,6 @@
                 <span class="slider"></span>
               </label>
             </div>
-
-
 
             <!-- 4. Outdoor PE Decision Super Badge -->
             <div class="toggle-item">
@@ -1105,7 +1169,7 @@
             <!-- 8. Auto Refresh Cycle -->
             <div class="toggle-item">
               <span class="toggle-label">🔄 自動重新整理週期</span>
-              <select class="form-select" id="selectRefresh" style="width: 140px; padding: 4px 8px; font-size: 13px;">
+              <select class="form-select" id="selectRefresh" style="width: 130px; padding: 4px 8px; font-size: 12.5px;">
                 <option value="300">每 5 分鐘</option>
                 <option value="600" selected>每 10 分鐘</option>
                 <option value="1800">每 30 分鐘</option>
@@ -1116,52 +1180,7 @@
         </div>
       </div>
 
-      <!-- Panel 4: Simulation Tester -->
-      <div class="panel-card">
-        <div class="panel-header">
-          <span class="panel-title">
-            <span class="step-number">4</span>
-            旗幟與室外課模擬演練
-          </span>
-          <span style="font-size: 12px; font-weight: 700; color: #ea580c;">校園演練專用</span>
-        </div>
-        <div class="panel-body">
-          <p style="font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 10px;">
-            點選下方按鈕，小雲寶會即時變換生動表情與室外體育課警示語：
-          </p>
-          <div class="sim-bar">
-            <button type="button" class="sim-btn btn-green" onclick="setSimulation(35)">
-              <span>🟢 綠色旗 (35)</span>
-              <span style="font-size: 11px; opacity: 0.9;">開心跑跳 ⚽</span>
-            </button>
-            <button type="button" class="sim-btn btn-yellow" onclick="setSimulation(65)">
-              <span>🟡 黃色旗 (65)</span>
-              <span style="font-size: 11px; opacity: 0.9;">記得喝水 🥤</span>
-            </button>
-            <button type="button" class="sim-btn btn-orange" onclick="setSimulation(125)">
-              <span>🟠 橘色旗 (125)</span>
-              <span style="font-size: 11px; opacity: 0.9;">減量戴口罩 😷</span>
-            </button>
-            <button type="button" class="sim-btn btn-red" onclick="setSimulation(165)">
-              <span>🔴 紅色旗 (165)</span>
-              <span style="font-size: 11px; opacity: 0.9;">改室內課 🚫</span>
-            </button>
-            <button type="button" class="sim-btn btn-purple" onclick="setSimulation(235)">
-              <span>🟣 紫色旗 (235)</span>
-              <span style="font-size: 11px; opacity: 0.9;">停止戶外 🛑</span>
-            </button>
-            <button type="button" class="sim-btn btn-maroon" onclick="setSimulation(350)">
-              <span>🟤 褐紅旗 (350)</span>
-              <span style="font-size: 11px; opacity: 0.9;">危害避難 🚨</span>
-            </button>
-          </div>
-          <button type="button" class="sim-reset-btn" id="btnResetSim" onclick="clearSimulation()">
-            🔄 還原為環境部即時真實數據 (即時監測模式)
-          </button>
-        </div>
-      </div>
-
-    </div>
+    </div> <!-- end .modules-column (中欄) -->
 
     <!-- Right Column: Live Preview & Code Generator -->
     <div class="preview-column">
